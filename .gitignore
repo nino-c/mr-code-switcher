@@ -72,7 +72,6 @@ Desktop.ini
 AaaE.sublime*
 *.dump
 app-scripts/*
-logs/*
 src/static/node/material-design-icons/[^i].
 src/postgres.bak/*
 src/media/*.200x200.*
