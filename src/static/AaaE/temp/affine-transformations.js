@@ -81,18 +81,39 @@ function applyTransform(seg,t) {
 	var r = 2; //Math.log(t)
 	fixedpoint = (new Point(0,0) + new Point(r*Math.cos(t), 
 		r*Math.sin(t))).transform(cartesian_matrix);
-	seg.path.smooth();
+	//seg.path.smooth();
 }
+
+
+// function iterate(n) {
+// 	_.each(lines, function(line) {
+// 		_.each(line.segments, function(seg) {
+// 			applyTransform(seg, n/30)
+// 			seg.path.smooth();
+// 		})
+// 	})
+// 	// setTimeout(function() {
+// 	// 	iterate(n+1);
+// 	// }, 20);
+// 	requestAnimationFrame(function() {
+// 		iterate(n+1);
+// 	});
+// }
+
+// iterate(0);
 
 view.onFrame = function(e) {
 	// e {delta, time, count}
 	_.each(lines, function(line) {
 		_.each(line.segments, function(seg) {
 			applyTransform(seg, e.time)
-			//console.log(map.transformation(seg.point.x, seg.point.y))
-			//seg.point = map.transformation(seg.point.x, seg.point.y);
+			seg.path.smooth();
 		})
 	})
+	// if (e.count == 0) {
+	// 	iterate(0);
+	// }
+	// console.log(e.count/20, e.time);
 }
 
 

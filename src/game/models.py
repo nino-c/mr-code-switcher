@@ -438,3 +438,9 @@ class GameInstanceSnapshot(TimestamperMixin, models.Model):
         return self.image.name or None
 
 
+class CodeSwitchingPhrase(models.Model):
+    phrase = models.TextField()
+    popularity = models.IntegerField()
+
+    def __unicode__(self):
+        return self.phrase[:100]

@@ -3,7 +3,7 @@ from game.models import *
 
 
 map(admin.site.register, [JSLibrary, ZeroPlayerGame, Category, 
-		GameInstanceSnapshot, SavedFunction, CodeModule, SeedVectorParam])
+		GameInstanceSnapshot, SavedFunction, CodeModule, SeedVectorParam, CodeSwitchingPhrase])
 
 # class GameParamsInline(admin.StackedInline):
 # 	model = GameParam

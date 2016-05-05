@@ -11,8 +11,21 @@
 
 		</div>
 
-		<md-content layout="row" layout-wrap layout-align="space-between start" class="headline-content">
-			<div flex>
+		<md-content class="headline-content" layout="column">
+			
+			
+			<div flex class="app-titles">
+				<!-- <div class="app-title-header"><strong>Featured App</strong></div> -->
+				<div class="app-title-text">Transformation on a grid</div>
+				<div class="app-subtitle-text">Papaver gravitation</div>
+
+			</div>
+
+			<div class="spacer" hide-short></div>
+
+			<div layout="row" layout-align="space-between end">
+
+
 				<md-button class="md-raised"  
 		            ng-href="#/categories"
 		            style="margin-left:0px;"
@@ -20,17 +33,20 @@
 		            <md-icon md-font-set="material-icons">apps</md-icon>
 		            <span>Browse Apps</span>
 		        </md-button>
-			</div>
-			
-			<div flex class="app-titles">
-				<div class="app-title-header"><strong>Featured App</strong></div>
-				<div class="app-title-text">Transformation on a grid</div>
-				<div class="app-subtitle-text">Papaver gravitation</div>
-			</div>
+
+				<md-button class="md-raised"
+		            ng-href="#/categories"
+		            style="margin-left:0px;"
+		            role="button">
+		            
+		            <span>next</span>
+		            <md-icon md-font-set="material-icons">arrow_forward</md-icon>			     
+		        </md-button>
+	        </div>
 
 		</md-content>
 
-		<div class="spacer" hide-short></div>
+		
 		
 	</div>
 
