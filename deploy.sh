@@ -1,3 +1,9 @@
+
+# The following are just loose instructions for setting up a new AWS EC2 instance (using Ubuntu machine image)
+# This file is not intended to be run directly
+
+###################################
+
 # server
 cd
 git clone https://github.com/nino-c/Apps-at-an-Exhibition.git app
