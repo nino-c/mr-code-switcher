@@ -48,6 +48,25 @@ angular.module('Exhibition')
             }
         }
     }])
+    .directive('hideShort', ['$window', function($window) {
+        return {
+            link: function(scope, element, attrs) {
+                function adjust() {
+                    if ($window.innerHeight < 500) {
+                        element.css({display:"none"});
+                    } else {
+                        element.css({display:"block"});
+                    }
+                }
+                adjust();
+
+                angular.element($window).bind('resize', function() {
+                    adjust();
+                    scope.$apply();
+                });
+            }
+        }
+    }])
     .directive('draw', function () {
         return {
             restrict: 'A',

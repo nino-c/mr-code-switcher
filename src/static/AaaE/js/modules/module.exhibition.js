@@ -114,6 +114,10 @@ angular.module('Exhibition', [
         }, 500);
     });
 
+    $rootScope.goHome = function() {
+      $location.path('#/');
+    }
+
     $rootScope.back = function () {
         var prevUrl = history.length > 1 ? history.splice(-2)[0] : "/";
         $location.path(prevUrl);
@@ -128,6 +132,6 @@ angular.module('Exhibition', [
     }
 
     $rootScope.hideXS = $window.innerWidth < 400 ? "display: 'none';" : "";
-
+    //$rootScope.hideShort = $window.innerHeight < 500 ? "display: 'none';" : "";
  
   });

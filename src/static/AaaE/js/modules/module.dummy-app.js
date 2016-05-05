@@ -1,6 +1,13 @@
 angular.module('DummyApp', [
-	'ngMaterial'
+	'ngMaterial',
+    'ngRoute'
 	])
-	.run(function($rootScope) {
+	.run(function($rootScope, $location, $window) {
+
 		$rootScope.isAngularApp = false;
+
+        $rootScope.goHome = function() {
+          $window.location = "/#";
+        }
+
 	});
