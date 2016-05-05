@@ -334,6 +334,10 @@ angular
         }
 
         $scope.execute = function() {
+
+            $rootScope.topScope.executeInstance($scope.instance.id);
+            return;
+
             if ($scope.instance.seed) {
 
                 $scope.__seed = JSON.parse($scope.instance.seed);

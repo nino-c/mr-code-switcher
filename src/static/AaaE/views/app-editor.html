@@ -23,6 +23,10 @@
             <input type="text" id="id_title" placeholder="Title" ng-model="app.title" />
           </md-input-container>
           <md-input-container>
+            <label for="id_title">Sub-title</label>
+            <input type="text" id="id_subtitle" placeholder="Sub-title" ng-model="app.subtitle" />
+          </md-input-container>
+          <md-input-container>
               <label>Category</label>
               <md-select ng-model="app.category">
                 <md-option ng-repeat="category in categories" 

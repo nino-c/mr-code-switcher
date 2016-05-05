@@ -159,6 +159,133 @@ angular.module('Exhibition')
             }
         };
     }])
+    .directive('appCanvasInstance', ['$rootScope', '$compile', 'InstanceService', function ($rootScope, $compile, InstanceService) {
+        return {
+            restrict: 'A',
+            scope: {
+                currentInstanceId: '='
+            },
+            link: function ($scope, element, attrs) {
+                console.log($scope.$parent);
+                $scope.$parent.$watch('currentInstanceId', function(instanceId) {
+                    
+                    if (!instanceId) return;
+                    console.log('$watch currentInstanceId', instanceId);
+
+                    InstanceService.get({id:parseInt(instanceId)})
+                        .$promise.then(function(instance) {
+                            console.log('appCanvasInstance directive, got instance', instance);
+
+                            $rootScope.currentInstance = instance;
+
+                            var dialect = instance.game.scriptType;
+                            var seedStructure = JSON.parse(instance.game.seedStructure);
+                            var seed = JSON.parse(instance.seed);
+                            
+                            // prepare code to eval
+                            // line-by-line for the system-generated part
+                            var seedcodelines = [];
+                            seedcodelines.push( 'var seed = ' + instance.seed + ';' );
+
+                            // canvas declarations
+                            if (dialect.indexOf('paperscript') == -1) {
+                                seedcodelines.push( 'var canvas = $("#big-canvas");' )
+                                seedcodelines.push( 'var Canvas = document.getElementById("big-canvas");' )
+                                seedcodelines.push( 'canvas.css({\'display\':\'block\'});' )
+                                seedcodelines.push( 'Canvas.width = $(window).width();' )
+                                seedcodelines.push( 'Canvas.height = $(window).height()-50;' )
+                                seedcodelines.push( 'console.log(Canvas);' )
+                                seedcodelines.push( 'console.log(canvas);' )
+                            }
+                            
+                            // import seed attributes into local namespace
+                            for (attr in seed) {
+                                
+                                var line = '';
+                                var k = seedStructure[attr].varname ? 
+                                            seedStructure[attr].varname : attr; 
+
+                                switch (seed[attr].type) {
+                                    case 'string':
+                                    case 'color':
+                                        line = "var " + k + " = \""
+                                            + seed[attr].value.toString() + "\";"
+                                        break;
+                                    case 'math':
+                                        line = "var " + k + " = "
+                                            + JSON.stringify(seed[attr]) + ";"
+                                        break;
+                                    case 'javascript':
+                                        line = "var " + k + " = "
+                                            + seed[attr].value + ";"
+                                        break;
+                                    case 'number':
+                                        line = "var " + k + " = "
+                                            + seed[attr].value.toString() + ";"
+                                        break;
+                                }
+
+                                seedcodelines.push(line);
+
+                            }
+
+                            var required_codeblocks = '';
+                            if (instance.game.required_modules.length > 0) {
+                                required_codeblocks = _.map(
+                                    instance.game.required_modules, function(mod) {
+                                        return mod.source;
+                                    }).join("\n\n");
+                            }
+
+                            source = seedcodelines.join("\n") + "\n"
+                                + required_codeblocks + "\n" 
+                                + instance.sourcecode;
+
+                            switch (dialect) {
+                                case 'text/paperscript':
+                                    //$parent.clearPaperCanvas();
+                                    element.html('<canvas id="paperscript-canvas" class="canvas-fullscreen"></canvas>'
+                                        + '<script type="' + dialect + '" canvas="paperscript-canvas">'
+                                        + source +'</script>');
+                                    $compile(element.contents())($scope);
+
+                                    eval( seedcodelines );
+
+
+                                    paper.PaperScript.load();
+                                    loading = false;
+                                break;
+                                default:
+                                    //$parent.clearCanvas();
+                                    element.html('<canvas id="big-canvas"></canvas>');
+                                    $compile(element.contents())($scope);
+                                    console.log($scope);
+
+                                    // extra_seedcodelines = [ 'var canvas = $("#big-canvas");',
+                                    //     'var Canvas = document.getElementById("big-canvas");'];
+
+                                    // eval(extra_seedcodelines.join("\n") + "\n" + seedcodelines );
+
+                                    eval(seedcodelines );
+
+                                    
+                                    gameFunction = new Function('Canvas', source);
+                                    gameFunction(Canvas);
+                                    loading = false;
+
+                                break;
+                            }
+
+                        });
+                
+
+                })
+                
+  
+
+            }
+        };
+    }])
     // .directive('feature-display', ['$scope', function() {
     //     return {
     //         scope: {

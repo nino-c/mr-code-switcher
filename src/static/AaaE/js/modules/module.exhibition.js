@@ -76,11 +76,12 @@ angular.module('Exhibition', [
     $rootScope.showBGCanvas = true;
     $rootScope.showAppCanvas = false;
     $rootScope.isAngularApp = true;
+    $rootScope.topScope = null;
+    $rootScope.currentInstance = {};
 
     var history = [];
     $rootScope.$on( "$routeChangeStart", function($event, next, current) {
           
-      console.log("routechange", $location.path())
       history.push($location.$$path);
 
       if ($location.path().indexOf('/instance/') == -1) {
@@ -116,6 +117,7 @@ angular.module('Exhibition', [
 
     $rootScope.goHome = function() {
       $location.path('#/');
+      $rootScope.topScope.init();
     }
 
     $rootScope.back = function () {

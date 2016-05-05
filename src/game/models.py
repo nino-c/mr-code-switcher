@@ -101,6 +101,7 @@ class ZeroPlayerGame(TimestamperMixin, models.Model):
     category = models.ForeignKey(Category, related_name="apps")
     owner = models.ForeignKey(User)
     title = models.CharField(max_length=500)
+    subtitle = models.CharField(max_length=500, null=True, blank=True)
     description = models.TextField(blank=True)
     scriptType = models.CharField(max_length=100, null=True, blank=False)
     source = models.TextField(blank=True)

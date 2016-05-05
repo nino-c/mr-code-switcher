@@ -1,7 +1,7 @@
 <div ng-controller="FrontPageController" ng-init="init()">
 	
-	<div class="headline-bottom" md-whiteframe="8">
-		<!-- test -->
+	<div class="headline-bottom" md-whiteframe="6">
+		
 		<div hide-xs hide-short>
 
 			<h2 hide-xs>Apps at an Exhibition</h2>
@@ -16,14 +16,14 @@
 			
 			<div flex class="app-titles">
 				<!-- <div class="app-title-header"><strong>Featured App</strong></div> -->
-				<div class="app-title-text">Transformation on a grid</div>
-				<div class="app-subtitle-text">Papaver gravitation</div>
+				<div class="app-title-text">{{ currentInstance.game.title }}</div>
+				<div class="app-subtitle-text">{{ currentInstance.game.subtitle }}</div>
 
 			</div>
 
 			<div class="spacer" hide-short></div>
 
-			<div layout="row" layout-align="space-between end">
+			<div layout="row" layout-align-xs="space-between end" layout-align="end end">
 
 
 				<md-button class="md-raised"  
@@ -35,7 +35,7 @@
 		        </md-button>
 
 				<md-button class="md-raised"
-		            ng-href="#/categories"
+		            ng-click="nextApp()"
 		            style="margin-left:0px;"
 		            role="button">
 		            

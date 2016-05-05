@@ -4,8 +4,6 @@ angular
 		'$location', 'CategoryService', 
 		function($rootScope, $scope, $location, CategoryService) {
 		
-		$rootScope.topScope = $scope;
-
 		$scope.loading = true;
 		$scope.imagelimit = 9;
 		
