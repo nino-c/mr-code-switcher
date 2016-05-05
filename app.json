@@ -1,0 +1,29 @@
+{
+  "name": "Apps-at-an-Exhibition",
+  "description": "An experiment in javascript meta-programming meant to generate art from mathematical chaos.",
+  "image": "heroku/python",
+  "repository": "https://github.com/nino-c/Apps-at-an-Exhibition",
+  "keywords": ["python", "django" ],
+  "scripts": {
+  },
+  "env": {
+    "DISABLE_COLLECTSTATIC": {
+      "required": true
+    },
+    "HEROKU_POSTGRESQL_MAUVE_URL": {
+      "required": true
+    },
+    "SECRET_KEY": {
+      "required": true
+    }
+  },
+  "addons": [
+    "heroku-postgresql"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ]
+
+}
