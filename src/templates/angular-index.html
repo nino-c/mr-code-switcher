@@ -1,0 +1,38 @@
+{% extends "angular-base.html" %}
+{% load staticfiles %}
+{% load thumbnail %}
+
+ 
+
+
+
+
+{% block bottomscripts %}
+
+
+  <script src="{% static 'AaaE/lib/angular/angular.js' %}" type="text/javascript"></script>
+  <script src="{% static 'node/angular-material/angular-material.min.js' %}" type="text/javascript"></script>
+  <script src="{% static 'AaaE/lib/angular-bootstrap/ui-bootstrap.js' %}" type="text/javascript"></script>
+  <script src="{% static 'AaaE/lib/angular-ui-codemirror/ui-codemirror.js' %}" type="text/javascript"></script>
+  <script src="{% static 'AaaE/lib/angular-route/angular-route.js' %}" type="text/javascript"></script>
+  <script src="{% static 'AaaE/lib/angular-resource/angular-resource.js' %}" type="text/javascript"></script>
+  <script src="{% static 'AaaE/lib/angular-cookies/angular-cookies.js' %}" type="text/javascript"></script>
+  <script src="{% static 'AaaE/lib/angular-animate/angular-animate.js' %}" type="text/javascript"></script>
+  <script src="{% static 'AaaE/lib/angular-aria/angular-aria.js' %}" type="text/javascript"></script>
+  <script src="{% static 'AaaE/lib/angular-messages/angular-messages.js' %}" type="text/javascript"></script>
+  <script src="{% static 'AaaE/lib/angular-location-update/angular-location-update.js' %}" type="text/javascript"></script>
+  <script src="{% static 'node/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js' %}" type="text/javascript"></script>
+  
+
+<!-- main angular app  -->
+  {% for include in angular_includes %}
+  <script src="{% static include %}" type="text/javascript"></script>
+  {% endfor %}
+
+{% endblock %}
+
+
+ 
+
+</body>
+</html>

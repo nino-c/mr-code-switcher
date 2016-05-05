@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}About{% endblock %}
+
+{% block navbar-left %}
+  {% include "_navbar.html" with active_link="about" %}
+{% endblock %}
+
+<!-- Benefits of the Django application -->
+{% block container %}
+
+<!-- <div id="sec1" class="text-page">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h1>plerp.org</h1>
+        <p class="lead">An Awesome Tagline Goes Here</p>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div class="text-page">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6">
+        
+        <h3>About plerp.org
+          <br /><small>Interactive math, music, and art programming</small>
+        </h3>
+        <hr />
+        <div class="text-fluid">
+
+          <p>Plerp.org is a project planned in two phases.  The current site is the first phase, and it serves as a portfolio for its creator.</p>
+
+          </p>In a broader sense, plerp.org aims to lay the foundation of "sysnesthesiology", the creator's own term for his inter-disciplenary research.  The mission of plerp.org, and of sysnesthesiology in general, is to discover connections between mathematics, music, logic, art, and philosophy.   More technically, sysnesthesiology is the study of mathematical "mappings" between categories (abstract algebraic structures) that we percieve through different sensory channels.  For example, visualizing music in real-time as animated graphic images would be an isomorphism from the category of musical sound and the category of pixels on screen over time.</p>
+
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <h3>About Nino P. Cocchiarella 
+          <br /><small>Developer and researcher in synesthesiology</small>
+        </h3>
+        <hr />
+        <div class="text-fluid">
+
+          <img class="img-circle centered pull-right right-floater" src="{% static 'site/img/nino.jpg' %}" width="150" height="150" />
+
+          <p>Nino is a software engineer and creator of plerp.org. His favorite toolkits are python web frameworks (Django, Flask, web2py), and with the advent of the HTML5 canvas causing a renewed interest in front-end development, javascript and coffeescript frameworks like paper.js, backbone.js, webix.js, jPlayer, numeric.js, and, embracing the functional programming paradigm now, heavy use of underscore.js.</p>
+
+          </p>With a special interest in music, Nino also does research in and application of the many open-source music and sound processing packages that are available in the python language.  Pydub, abjad (for musical notation), music21, and audiolab are among the his favorites.</p>
+
+          <p>Academically, Nino's primary research interests are in mathematics, music, logic, and philosophy, particularly mathematical "mappings" between abstract structures that we percieve through different sensory channels (such the visualization of music into animated digital image), a field that he calls "synesthesiology".</p>
+
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock container %}
+

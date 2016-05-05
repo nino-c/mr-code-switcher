@@ -1,0 +1,55 @@
+<md-content ng-controller="AppListController" ng-init="initialize()" layout-padding>
+    
+    <!-- loading spinner -->
+    <div ng-if="loading" class="loading-bg-base">
+        <div class="loader-lg">
+            <svg class="circular2">
+            <circle class="path" cx="125" cy="125" r="40" fill="none" stroke-width="4" 
+                stroke-miterlimit="10"/>
+            </svg>
+            <div class="loading-text">Loading...</span></div>
+        </div>
+    </div>
+    
+    <h3 class="md-primary" ng-if="userLoggedIn">
+        {{ category.name }}
+        <a href="#/apps/new/" class="btn btn-primary pull-right">
+            <span class="glyphicon glyphicon-plus-sign"></span>
+            Create a new app
+        </a>
+    </h3>
+
+    <h3 ng-if="!userLoggedIn">{{ category.name }}</h3>
+    
+    <md-card ng-repeat="app in apps | orderBy:'popularity':true" 
+        ng-click="selectApp(app)" ng-if="!loading">
+        
+        <md-card-title>
+            <md-card-title-text>
+                <h4>{{ app.title }}</h4>
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+            <div layout-gt-xs="row" layout-xs="column" layout-wrap>
+                <div flex-gt-xs="30" class="text-muted" style="padding-right: 50px;">
+                    <strong>Author: </strong>{{ app.owner.name }}<br />
+                    <em>created {{ app.created }}</em><br /><br />
+                    {{ app.instances.length }} instances<br />
+                    {{ app.instances.length }} snapshots<br />
+                    {{ app.popularity }} views
+                </div>
+                <p hide-gt-xs></p>
+                <div flex-gt-xs="70">
+                    <img ng-src="/media/{{ snap | thumbnail:125 }}" 
+                        class="thumbnail-tiny pull-left"
+                        adjust-image basewidth="80"
+                        ng-repeat="snap in app.images | limit:15" />
+                </div>
+            </div>
+        </md-card-content>
+
+
+    </md-card>
+
+
+</md-content>

@@ -1,0 +1,174 @@
+<md-content ng-controller="InstancesController" ng-init="initialize()">
+
+    <!-- loading spinner -->
+    <div ng-if="loading" class="loading-bg-base">
+        <div class="loader-lg">
+            <svg class="circular2">
+            <circle class="path" cx="125" cy="125" r="40" fill="none" stroke-width="4" 
+                stroke-miterlimit="10"/>
+            </svg>
+            <div class="loading-text">Loading...</span></div>
+        </div>
+    </div>
+
+    <md-card>
+        <md-card-title>
+            <h3>{{ app.title }}</h3>
+        </md-card-title>
+        <md-card-content style="min-height:500px;" layout-align="start start">
+
+
+            <div layout="row">
+                <div flex="grow">
+                    <div>by <strong>{{ app.owner }}</strong></div>
+                    <div><strong>Category:</strong> {{app.category}}</div>
+                    <div class="text-muted">created @ {{ app.created }}</div>
+                    <hr />
+
+                    <div layout="row">
+                        <div ng-if="userLoggedIn">
+                            <md-button class="md-raised md-primary"  
+                                ng-href="#/apps/{{ app.id }}/edit/" 
+                                role="button" layout-align="center center">
+                                <md-icon md-font-set="material-icons">&#xE254;</md-icon>
+                                <span>Edit</span>
+                            </md-button>
+
+                            <md-button class="md-raised md-warn"  
+                                href="#/apps/{{ app.id }}/edit/" 
+                                role="button" layout-align="center center"
+                                ng-click="delete()">
+                                <md-icon md-font-set="material-icons">&#xE872;</md-icon>
+                                <span>Delete</span>
+                            </md-button>
+                        </div>
+                    </div>
+                </div>
+                <div flex="none">
+                    <md-button class="md-raised md-accent"  
+                        ng-click="selectFirstInstance()"
+                        role="button" layout-align="center center">
+                        <md-icon md-font-set="material-icons" ng-cloak>play_circle_outline</md-icon>
+                        <span>Instantiate App</span>
+                    </md-button>
+                </div>
+            </div>
+
+          
+            
+                
+
+                <div class="caption">
+                    <p>{{ app.description }}</p>
+                </div>
+
+
+                
+
+                <p hide-gt-xs></p>
+
+                
+                <!-- <div flex="5"></div>
+                <div flex="none">
+                
+                    <div style="width:300px; float: right;" ng-if="images.length > 0">
+                        <md-grid-list md-cols="3"
+                            md-row-height="100px" md-gutter="0px">
+                            <md-grid-tile ng-repeat="image in images | limit:9">
+                                <img ng-src="/media/{{ image | thumbnail:125 }}" 
+                                    class="thumbnail thumbnail-med" width="100" height="100" />
+                            </md-grid-tile>
+                        </md-grid-list>
+                    </div>
+
+                </div> -->
+            
+            
+
+            <h3>Instances</h3>
+
+
+            <md-content layout-wrap>
+                
+                <!-- <div class="text-muted">Loading instances...</div> -->
+                <md-progress-linear md-mode="indeterminate" ng-disabled="!loadingInstances"></md-progress-linear>
+
+                <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 no-padding"
+                    ng-repeat="instance in instances">
+
+                    <md-card ng-click="selectInstance(instance.id)">
+                        
+                        <img ng-if="instance.images.length > 0" 
+                            ng-src="/media/{{ instance.images[0] | thumbnail:200 }}" 
+                            class="thumbnail thumbnail-lg nomargin" />
+                        
+                        <md-card-content>
+
+                            <h5>Seed:</h5>
+                            <div ng-repeat="seedling in instance.seedlist">
+                                <div>
+                                    <em>{{ seedling[0] }}:</em> 
+                         
+
+                                        <span ng-if="!seedling[1].type || seedling[1].type == 'string' || seedling[1].type == 'number'" 
+                                            class="text-muted">{{ seedling[1].value }}</span>
+                                        
+                                       
+                                        <div ng-if="seedling[1].type == 'color'" 
+                                            style="display: inline-block; background-color: {{ seedling[1].value }}; 
+                                            width: 15px; height: 15px;"></div>
+                                        
+                                        
+                                        <span ng-if="seedling[1].type == 'math'" class="text-muted">
+                                        ${{ seedling[1].latex }}$
+                                        </span>
+
+                                        <span ng-if="seedling[1].type == 'javascript'" class="text-muted">
+                                        {{ seedling[1].value }}
+                                        </span>
+                                    
+                                </div>
+                            </div>
+                        
+                        </md-card-content>
+                        
+                        <md-card-actions ng-if="userLoggedIn">
+                            <md-button class="md-small pull-right" 
+                                ng-click="deleteInstance($event, instance)"
+                                data-id="{{instance.id}}" 
+                                role="button">Delete</md-button>
+                            <!-- <a class="btn btn-danger pull-right" 
+                                ng-click="deleteInstance($event, instance)"
+                                data-id="{{instance.id}}"
+                                role="button"><span class="glyphicon glyphicon-remove"></span>
+                                Delete</a> -->
+                        </md-card-actions>
+
+                       
+                    </md-card>
+
+                </div>
+                
+            </md-content>
+           
+
+            
+           
+           
+            <div ng-if="app.instances.length == 0">
+                
+                <md-button class="md-raised md-primary"  
+                    ng-click="instantiate()"
+                    role="button" layout-align="center center">
+                    <md-icon md-font-set="material-icons">add_circle</md-icon>
+                    <span>Create first instance</span>
+                </md-button>
+            </div>
+
+        </md-card-content>
+    </md-card>
+
+
+            
+
+</md-content>

@@ -1,0 +1,73 @@
+<div ng-controller="CategoriesController" ng-init="init()">
+	
+	<!-- loading spinner -->
+	<div ng-if="loading" class="loading-bg-base">
+	    <div class="loader-lg">
+			<svg class="circular2">
+			<circle class="path" cx="125" cy="125" r="40" fill="none" stroke-width="4" 
+			    stroke-miterlimit="10"/>
+			</svg>
+	    	<div class="loading-text">Loading...</span></div>
+	    </div>
+	</div>
+	
+	<!-- <div class="container-fluid">
+
+
+		<div ng-repeat="category in categories | orderBy: 'avg_popularity': true"
+			ng-repeat-end-call="onCategoryRepeatEnd($event)"
+			class="col-xs-12 col-sm-6 no-padding">
+
+			<md-card ng-click="selectCategory(category)">
+				<md-card-title>
+					<md-card-title-text>
+						<h3>{{ category.name }}</h3>
+					</md-card-title-text>
+				</md-card-title>
+				<md-card-content>
+					
+					
+					<md-grid-list md-cols="3" md-row-height="1:1">
+					  <md-grid-tile ng-repeat="im in category.images | limit:imagelimit">
+					  	<img ng-src="/media/{{ im | thumbnail:125 }}" style="width:95%; height: 95%" md-whiteframe="1" />
+					  </md-grid-tile>
+					</md-grid-list>
+
+
+				</md-card-content>
+				<md-card-actions>
+					<div class="text-muted pull-right">{{ category.total_popularity + category.popularity }} views</div>
+				</md-card-actions>
+			</md-card>
+
+		</div>
+		
+	</div> -->
+
+	<div class="headline-bottom">
+		<!-- test -->
+		<h2 hide-xs>Apps at an Exhibition</h2>
+		<h1 hide-gt-xs>Apps at an Exhibition</h1>
+
+		<md-divider></md-divider>
+		<!-- <span class="text-muted"><em>a mrcodeswitcher.com production</em></span> -->
+		<md-content layout="row" layout-wrap layout-align="center center" class="headline-content">
+			<div flex="40">
+				<md-button class="md-raised"  
+		            ng-href="#/categories"
+		            role="button">
+		            <md-icon md-font-set="material-icons">apps</md-icon>
+		            <span>Browse Apps</span>
+		        </md-button>
+			</div>
+			
+			<div flex="60" class="app-titles">
+				<div><strong>Featured App:</strong></div>
+				<div class="app-title-text">"Transformation on a grid"</div>
+				<div class="app-subtitle-text">Papaver gravitation</div>
+			</div>
+		</md-content>
+		
+	</div>
+
+</div>

@@ -1,0 +1,20 @@
+{% extends "angular-index.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}Sign Up{% endblock %}
+{% block form_heading %}Signing Up is Free{% endblock %}
+
+{% block accounts %}
+	
+	<div class="alert alert-warning">Signup is currently closed.</div>
+	{% block form %}
+	  {% crispy form %}
+	  <div class="form-message">
+	    <p>
+	      Already signed up? <a href="{% url 'accounts:login' %}">Log in</a>.
+	    </p>
+	  </div>
+	{% endblock form %}
+
+{% endblock accounts %}
+

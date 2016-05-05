@@ -1,0 +1,88 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Packaging files:
+*.egg*
+
+# Sphinx docs:
+build
+
+# SQLite3 database files:
+*.db
+*.sqlite3
+*.sqlite
+
+# Logs:
+*.log
+
+# Environment variables
+local.env
+.env
+src/.env
+
+src/media.bak/*
+
+# Django stuff:
+*.mo
+*.pot
+
+# Eclipse
+.project
+.pydevproject
+.settings
+
+# Linux Editors
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+.elc
+auto-save-list
+tramp
+.\#*
+*.swp
+*.swo
+
+# Rope
+.ropeproject
+
+# Mac
+.DS_Store
+._*
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Project settings
+./site/
+
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+
+
+AaaE.sublime*
+*.dump
+app-scripts/*
+logs/*
+src/static/node/material-design-icons/[^i].
+src/postgres.bak/*
+src/media/*.200x200.*
+src/media/*.125x125.*
+src/static/node/*
+src/static/bower/*
+src/static/bower_components/*
+
+src/media.bak
+src/media.bak/*
+src/migrations.bak
+src/migrations.bak/*
+src/static/AaaE/lib/es6*

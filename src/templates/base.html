@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load staticfiles %}
+    {% load thumbnail %}
+    {% load compile_static %}
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block description %}{% endblock description %}">
+    <meta name="author" content="Nino P. Cocchiarella">
+    <link rel="shortcut icon" href="{% static 'site/ico/favicon.ico' %}">
+
+    <title>{% block title %}{% include "_brandname.html" %} :: {% endblock %}</title>
+
+
+    <!-- Scripts that MUST be loaded on all pages -->
+    <!--<script type="text/javascript" src="{% static 'site/js/lib/coffee-script.js' %}"></script>-->
+    <!--<script type="text/javascript" src="{% static 'site/js/lib/numeric-1.2.6.js' %}"></script>-->
+    <script type="text/javascript" src="{% static 'site/js/lib/jQuery2.1.1.js' %}"></script>
+    <script type="text/javascript" src="{% static 'site/js/lib/underscore.js' %}"></script>
+    <script type="text/javascript" src="{% static 'site/js/lib/backbone.js' %}"></script>
+    <script type="text/javascript" src="{% static 'site/js/app/util.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap-colorpicker.js' %}"></script>
+    <script type="text/javascript" src="{% static 'site/js/lib/codemirror.js' %}"></script>
+
+
+    
+
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'bootstrap/css/bootstrap-colorpicker.css' %}" rel="stylesheet" />
+    <link href="{% static 'site/css/codemirror.css' %}" rel="stylesheet">
+    <link href="{% static 'site/css/monokai.css' %}" rel="stylesheet">
+
+
+    <!-- Custom styles for this site -->
+    {% block styles %}
+    <link href="{% static 'site/css/main.css' %}" rel="stylesheet">
+    <link href="{% static 'site/less/main.less'|compile %}" rel="stylesheet" />
+    {% endblock styles %}
+
+    <!-- Custom tags for the head tag -->
+    {% block extrahead %}{% endblock extrahead %}
+
+    <!--<script data-main="/static/site/js/main" src="{% static 'site/js/require.js' %}">
+    </script>-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div id="shield">&nbsp;</div>
+
+    {% block navbar %}
+    <div class="navbar navbar-default navbar-fixed-top navbar-transparent" role="navigation">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+
+          <a class="navbar-brand" href="{% url 'home' %}">
+            <h1>∀aa∃</h1>
+          </a>
+        </div>
+        {% block navbar-menu %}
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            {% block navbar-left %}
+              {% include "_navbar.html" with active_link="home" %}
+            {% endblock %}
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            {% block navbar-right %}
+              {% if user.is_authenticated %}
+                {% if user.is_staff %}
+                <li><a href="{% url 'admin:index' %}">Admin</a></li>
+                {% endif %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle profile-menu" data-toggle="dropdown">
+                			<img src="{% thumbnail user.profile.picture|default:'default_profile.png' 30x30 crop %}" alt="" />
+                			{{ user.get_full_name|truncatechars:20 }}
+                			<span class="caret"></span>
+                	 </a>
+
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="{% url 'profiles:show_self' %}">Profile</a></li>
+                    <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
+                  </ul>
+                </li>
+              {% endif %}
+              {% if not user.is_authenticated %}
+                <a class="btn btn-default" href="{% url 'accounts:login' %}" role="button">Log in</a>
+                <a class="btn btn-primary" href="{% url 'accounts:signup' %}" role="button">Sign up</a>
+              {% endif %}
+            {% endblock %}
+          </ul>
+          </ul>
+        </div><!--/.nav-collapse -->
+        {% endblock %}
+    </div>
+    {% endblock navbar %}
+
+
+
+    {% block messages %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">  <!-- singular -->
+            <a class="close" data-dismiss="alert">×</a>
+            {{ message|safe }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endblock %}
+
+    {% block splash %}
+    {% endblock splash %}
+
+    {% block container %}
+    {% endblock container %}
+
+    {% block controlPanel %}
+    {% endblock %}
+
+    {% block backboneTemplates %}
+    {% endblock %}
+
+    <!-- Site footer -->
+    {% block footer %}
+      <!-- Some social button for contact will do -->
+      <footer>
+      <a name="contact"></a>
+      <div class="container">
+            <div class="footer">
+              <div class="row">
+                <div class="col-lg-6">
+                    <p>&copy; Company {% now 'Y' %}</p>
+                </div>
+                <div class="col-lg-6 text-right">
+                  Connect with us on
+                  <a href="#"><i class="fa fa-facebook"></i> Facebook</a> or
+                  <a href="#"><i class="fa fa-twitter"></i> Twitter</a>
+                </div>
+              </div>
+            </div>
+      </div>
+      </footer>
+    {% endblock %}
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    {% block scripts %}
+    {% endblock scripts %}
+
+  </body>
+</html>
