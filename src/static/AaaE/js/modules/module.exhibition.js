@@ -44,6 +44,9 @@ angular.module('Exhibition', [
         .when('/category/:id/', {
           templateUrl: '/static/AaaE/views/category-list.html'
         })
+        .when('/apps-list/', {
+          templateUrl: '/static/AaaE/views/app-list-by-popularity.html'
+        })
         .when('/apps/new/', {
           templateUrl: '/static/AaaE/views/app-editor.html'
         })
@@ -91,7 +94,7 @@ angular.module('Exhibition', [
         $rootScope.showAppCanvas = true;
         $rootScope.showBGCanvas = false;
       }
-
+      console.log($location.path());
       if ($location.path().indexOf('/accounts/') > -1) {
         $rootScope.isAngularApp = false;
       } else $rootScope.isAngularApp = true;
@@ -116,7 +119,7 @@ angular.module('Exhibition', [
     });
 
     $rootScope.goHome = function() {
-      $location.path('#/');
+      $location.path('/');
       $rootScope.topScope.init();
     }
 

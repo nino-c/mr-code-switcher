@@ -36,6 +36,8 @@ angular
                 $scope.currentInstanceIndex++;
                 $scope.currentInstanceIndex = $scope.currentInstanceIndex % $scope.featuredApps.length;
                 $scope.executeNextInstance();
-            }
+            };
+
+            
 		
 	   }]);

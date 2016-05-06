@@ -9,7 +9,11 @@
           })
         }])
         .factory('AppServiceMinimal', ['$resource', function($resource)  {
-          return $resource('/game/api/apps-minimal/:id/', {id:'@id'})
+          return $resource('/game/api/apps-minimal/:id/', {id:'@id'}, { 
+              update: {
+                  method: 'PUT'
+              }
+          })
         }])
         .factory('InstanceService', ['$resource', function($resource)  {
           return $resource('/game/api/instances/:id/', {id:'@id'}, { 

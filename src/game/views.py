@@ -207,8 +207,9 @@ class AppViewSet(viewsets.ModelViewSet):
 
 @permission_classes((AllowAny, ))       
 class AppMinimalViewSet(viewsets.ModelViewSet):
-    queryset = ZeroPlayerGame.objects.all()
+    queryset = ZeroPlayerGame.objects.filter(category__enabled=True).order_by('-popularity')
     serializer_class = AppSerializerNoInstances
+
 
 @permission_classes((AllowAny, ))
 class InstanceViewSet(viewsets.ModelViewSet):

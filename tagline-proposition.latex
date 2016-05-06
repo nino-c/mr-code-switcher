@@ -1,1 +1,2 @@
-(\forall a \in apps)( (\exists e \in Exibit(app)) \implies () )
+(\forall x \in app)\space(( \exists y)\space (y = Exhibit(x)))
+(\forall app)\space( \exists Exhibit)

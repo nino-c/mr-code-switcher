@@ -1,7 +1,7 @@
 
 angular
     .module('Exhibition')
-    .controller('AppListController', ['$scope', 
+    .controller('CategoryAppListController', ['$scope', 
     	'$http', 
     	'$location', 
     	'$route', 

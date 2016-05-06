@@ -36,6 +36,7 @@ class UserField(serializers.Field):
         return obj.name
 
 
+
 # class AppInlineField(serializers.Field):
 #     def to_representation(self, obj):
 #         return obj
@@ -94,8 +95,23 @@ class UserSerializer(serializers.ModelSerializer):
             'date_joined', 'groups', 'user_permissions',)
         read_only_fields = ('id', 'name', 'avatar')
 
-    def get_avatar(self, object):
-        return object.profile.picture.url
+    def get_avatar(self, obj):
+        return obj.profile.picture.url
+
+class ExtendedUserSerializer(serializers.ModelSerializer):
+    avatar = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = User
+        exclude = ('password', 'last_login', 'is_superuser', 'email', 'is_staff', 'is_active', 'date_joined', 'groups', 'user_permissions')
+        #include = ('id', 'name', 'avatar')
+
+    def get_avatar(self, obj):
+        tokens = obj.profile.picture.path.split('/')
+        for i, token in enumerate(tokens):
+            if token == 'media':
+                return '/'.join([''] + tokens[i:])
+        return ''
 
 
 class AppSerializer_Inline(serializers.ModelSerializer):
@@ -103,7 +119,7 @@ class AppSerializer_Inline(serializers.ModelSerializer):
 
     class Meta:
         model = ZeroPlayerGame
-        include = ('__all__')
+        include = '__all__'
 
 class AppSerializer_Category_Inline(serializers.ModelSerializer):
     images = serializers.SerializerMethodField(read_only=True)
@@ -294,14 +310,16 @@ class AppSerializerMinimal(serializers.ModelSerializer):
 
 class AppSerializerNoInstances(serializers.ModelSerializer):
     category = CategoryField()
-    owner = UserField()
+    owner = ExtendedUserSerializer(read_only=True)
     category_id = serializers.SerializerMethodField(read_only=True)
     instance_count = serializers.SerializerMethodField(read_only=True)
     first_instance_id = serializers.SerializerMethodField(read_only=True)
+    images = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = ZeroPlayerGame
         depth = 1
+        #ordering = ['-popularity']
         exclude = ('source', 'seedStructure',)
 
     def get_category_id(self, obj):
@@ -315,6 +333,9 @@ class AppSerializerNoInstances(serializers.ModelSerializer):
             return obj.instances.first().id
         else:
             return None
+
+    def get_images(self, obj):
+        return obj.getImageSet()
 
 class CategoryAppsSerializer(serializers.ModelSerializer):
     apps = AppSerializerMinimal(read_only=True, many=True)

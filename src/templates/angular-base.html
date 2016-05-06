@@ -15,7 +15,7 @@
         <meta property="og:type" content="website">
         <meta property="og:title" content="∀aa∃ :: Apps at an Exhibition">
         <meta property="og:description" content="Mr. Code-switcher :: he who code-switched up-on the word 'code-switching' itself.">
-        <!-- <meta name="viewport" content="width=device-width; initail-scale=1" /> -->
+
         <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous" /> -->
         
         <link rel="stylesheet" href="/static/site/css/bootstrap.css" />
@@ -120,7 +120,14 @@
                 </md-button> -->
 
                   <span class="sub-brand" ng-click="goHome()" flex="grow">
-                    <span flex hide-xs><strong>∀aa∃</strong> :: Apps at an Exhibition</span>
+                    <!-- <span class="proposition" hide-xs>$(\forall x \in \text{app})\space( \exists y)\space y = \text{Exhibit}(x)$</span> -->
+                    <span flex hide-xs><!-- <span class="brand">∀aa∃</span> ::  -->Apps at an Exhibition</span>
+                    <span flex hide-xs>::</span>
+                    <span class="proposition" hide-xs>$(\forall x \in A)\space( \exists y)\space y = E(x)$</span>
+                    <!-- <span flex class="proposition" hide-xs>$\forall x \in \text{apps}$</span> -->
+                    <!-- $(\forall app)\space( \exists Exhibit)$ -->
+                    
+                    
                     <span class="device-xs" flex hide-gt-xs>Apps at an Exhibition</span>
                   </span>
 
@@ -129,7 +136,7 @@
                     {% if user.is_authenticated %}
                     <md-menu>
                       <md-button ng-click="$mdOpenMenu()">
-                        <img src="{% thumbnail user.profile.picture|default:'default_profile.png' 30x30 crop %}" alt="" />
+                        <img src="{% thumbnail user.profile.picture|default:'default_profile.png' 30x30 crop %}" class="avatar" />
                         {{ user.get_full_name|truncatechars:20 }}
                         <span class="caret"></span>
                       </md-button>

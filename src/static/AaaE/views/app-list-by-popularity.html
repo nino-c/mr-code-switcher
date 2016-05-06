@@ -1,0 +1,59 @@
+<div ng-controller="AppListController" ng-init="initAppList()">
+
+    <md-content ng-show="showAppList" class="slide-left main-md-content" md-whiteframe="3">
+        
+        <div ng-repeat="app in apps" class="app-list">
+
+            <div class="title">{{ app.title }}</strong>
+            <div class="subtitle" ng-if="app.subtitle != ''">{{ app.subtitle }}</div>
+
+            <div class="spacer"></div>
+
+            <div layout-gt-xs="row" layout-xs="column">
+                <div flex-gt-xs="50">
+                    <!-- <div layout="row" layout-align="center center">
+                        <img src="{{ app.owner.avatar }}" class="avatar" />
+                        by {{ app.owner.name }}
+                    </div> -->
+                    <div class="info">
+                        <div class="label-left">Author:</div>
+                        {{ app.owner.name }}
+                    </div>
+                    <div class="info">
+                        <div class="label-left">Category:</div>
+                        {{ app.category }}
+                    </div>
+                    <div class="info">
+                        <div class="label-left">Views:</div>
+                        {{ app.popularity }}
+                    </div>
+                    <div class="info">
+                        <div class="label-left">Created:</div>
+                        {{ app.created }}
+                    </div>
+
+                    <div class="text-muted description">{{ app.description }}</div>
+
+                    <div class="spacer" hide-gt-xs></div>
+
+                </div>
+                <div flex-gt-xs="50">
+                    <md-grid-list md-cols="4" md-row-height="1:1" md-gutter="2px">
+                        <md-grid-tile ng-repeat="im in app.images | limit:12">
+                            <div class="scale-fade-in">
+                                <img src="/media/{{ im | thumbnail:125 }}" style="max-width:100%; height:auto; border:1px solid #ddd;" />
+                            </div>
+                        </md-grid-tile>
+                    </md-grid-list>
+                </div>
+            </div>
+
+            <md-divider></md-divider>
+
+        </div>
+          
+
+
+    </md-content>
+
+</div>
