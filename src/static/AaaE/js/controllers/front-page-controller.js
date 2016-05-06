@@ -11,7 +11,7 @@ angular
             $scope.initFrontPage = function() {
                 console.log('FrontPageController scope init');
                 $scope.loading = false;
-                $timeout(function() { $scope.togglePanel(); }, 100);
+                $timeout(function() { $scope.togglePanel(); });
             };
 
             $scope.togglePanel = function() {

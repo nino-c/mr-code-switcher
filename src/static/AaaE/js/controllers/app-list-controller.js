@@ -19,7 +19,7 @@ angular
             $scope.initAppList = function() {
                 console.log('AppList scope init');
                 //$scope.loading = false;
-                $timeout(function() { $scope.toggleAppList(); });
+                $scope.toggleAppList();
             };
 
             $scope.toggleAppList = function() {
