@@ -7,6 +7,7 @@ angular.module('Exhibition', [
   'ngResource',
   'ngAnimate',
   'ngCookies',
+  'ngSanitize',
   'colorpicker.module',
   'ng.deviceDetector',
   'ngSilent',

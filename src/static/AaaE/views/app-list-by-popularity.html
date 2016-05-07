@@ -4,32 +4,63 @@
         
 
         <div class="toolbar-inner">
-            <div layout="row">
-                <div flex="grow">
-                    <md-input-container>
-                        <label>Order by</label>
+            <div layout="row" layout-align="space-between start">
+                <div flex>
+
+                <!-- <md-input-container class="no-top-margin"> -->
+                    <md-menu>
+                        <md-button class="md-icon-button" ng-click="openSortMenu($mdOpenMenu, $event)">
+                            <md-icon md-menu-origin md-font-set="material-icons">sort</md-icon>
+                        </md-button>
+                        <md-menu-content width="4">
+                            <md-menu-item 
+                                ng-repeat="x in [['popularity','-popularity'], ['newest', '-created']]">
+                              <md-button ng-click="sortBy(x[1])">
+                                
+                                {{ x[0] }}
+                              </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                <!-- </md-input-container> -->
+
+                    <!-- <md-input-container>
+                        <label>Sort by</label>
                         <md-select ng-model="orderby">
                           <md-option ng-repeat="x in [['popularity','-popularity'], ['newest', '-created']]" value="{{x[1]}}">
                             {{x[0]}}
                           </md-option>
                         </md-select>
-                    </md-input-container>
+                    </md-input-container> -->
+                    <!-- <md-input-container>
+                        <md-radio-group ng-model="selected">
+                          <md-radio-button ng-repeat="x in [['popularity','-popularity'], ['newest', '-created']]" 
+                            ng-value="x[1]" aria-label="{{ x[0] }}">
+                                 {{ x[0] }}
+                          </md-radio-button>
+                        </md-radio-group>
+                    </md-input-container> -->
                 </div>
-                <div flex="auto">
-                    <md-content>
-                        <md-input-container class="md-icon-float">
-                            <!-- <md-icon md-font-icon="fa fa-search"></md-icon> -->
-                            <md-icon md-svg-src="/static/site/img/icons/ic_search_black_24px.svg">search</md-icon>
-                            <input ng-model="searchInput" id="app-search" placeholder="search apps..." size="60" />
-                        </md-input-container>
-                    </md-content>
+                <div>
+                    
+                    <md-input-container class="no-top-margin">
+                        <!-- <md-icon md-font-icon="fa fa-search"></md-icon> -->
+                        <md-icon md-svg-src="/static/site/img/icons/ic_search_black_24px.svg" 
+                            class="half-transparent" 
+                            ng-click="showSearch=!showSearch">search</md-icon>
+
+                        <input ng-show="showSearch" ng-model="searchInput" 
+                            id="app-search" placeholder="search apps..." />
+
+                    </md-input-container>
+                    
                 </div>
             </div>
         </div>
         
-        <md-divider class="top"></md-divider>
+        <!-- <md-divider class="top"></md-divider> -->
 
-        <div ng-repeat="app in apps" class="app-list">
+        <div ng-repeat="app in apps" class="app-list" ng-click="selectApp(app)">
 
             <div class="title">{{ app.title }}</strong>
             <div class="subtitle" ng-if="app.subtitle != ''">{{ app.subtitle }}</div>
@@ -59,7 +90,7 @@
                         {{ app.created }}
                     </div>
 
-                    <div class="text-muted description">{{ app.description }}</div>
+                    <div class="text-muted description">{{ app.description | truncateText:400 }}</div>
 
                     <div class="spacer" hide-gt-xs></div>
 

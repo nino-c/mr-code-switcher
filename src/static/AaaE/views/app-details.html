@@ -59,7 +59,7 @@
                 
 
                 <div class="caption">
-                    <p>{{ app.description }}</p>
+                    <p ng-bind-html="app.description | truncateTextWithLink:600"></p>
                 </div>
 
 

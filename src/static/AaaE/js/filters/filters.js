@@ -23,6 +23,25 @@ angular.module('Exhibition')
           return  text ? String(text).replace(/<[^>]+>/gm, '') : '';
         };
     })
+    .filter('toHTML', function() {
+        return function(text) {
+          return text ? text.split("\n").join("<br />") : '';
+        };
+    })
+    .filter('truncateText', function() {
+        return function(input, length) {
+            if (length === undefined) length = 500;
+            return input.length > length ? input.substr(0,length) + "..." : input;
+        }
+    })
+    .filter('truncateTextWithLink', function() {
+        return function(input, length) {
+            if (length === undefined) length = 500;
+            if (!input) return '';
+            return input.length > length ? input.substr(0,length) 
+                + "...<br /><md-button ng-click=\"showMore()\">[more]</md-button>" : input;
+        }
+    })
     .filter('limit', function() {
         return function(input, length) {
             if (input.length > length) {
