@@ -1,19 +1,51 @@
+/*
+*	The `ContentController` handles everything to do with the
+*	one and only <canvas> element, for bg and apps
+*/
+
 angular
 	.module('Exhibition')
-	.controller('ContentController', ['$rootScope', '$scope', '$timeout',
-        function($rootScope, $scope, $timeout) {
+	.controller('ContentController', ['$rootScope',
+		'$scope',
+		'$location',
+		'$timeout',
+		'$window',
+        function($rootScope, $scope, $location, $timeout, $window) {
 
             $rootScope.topScope = $scope;
+			$scope.loading = false;
+			$scope.showBottom = $rootScope.showBottom;
 
+			// vars for cycle of featured apps
             $scope.featuredApps = [[849, 15], [121,7]];
+			$scope.currentInstance = null;
             $scope.currentInstanceIndex = 0;
             $scope.currentInstanceId = $scope.featuredApps[0][0];
-            $scope.background = true;
 
+			$scope.init = function() {
+                console.log('ContentController <body> scope init');
+                $scope.executeNextInstance();
+				$timeout(function() { $scope.toggleBottomBar(); }, 100);
+            };
+
+			$scope.setCurrentInstance = function(id) {
+				console.log('setCurrentInstance = ', id);
+				$scope.currentInstanceId = id;
+			};
+
+			$scope.toggleBottomBar = function() {
+                $scope.showBottom = !$scope.showBottom;
+            };
+
+            $scope.browseApps = function($event) {
+                $location.path('/apps-list/');
+                $event.stopPropagation();
+                $scope.showBottom = false;
+            };
 
             $scope.executeNextInstance = function() {
                 console.log('---exec NEXT instance ' + $scope.currentInstanceIndex.toString());
-                $scope.currentInstanceId = $scope.featuredApps[$scope.currentInstanceIndex][0];
+                $scope.setCurrentInstance( $scope.featuredApps[$scope.currentInstanceIndex][0] );
                 var timer = $scope.featuredApps[$scope.currentInstanceIndex][1];
                 $timeout(function() {
                     //$scope.currentInstanceIndex++;
@@ -21,16 +53,6 @@ angular
                 }, (timer*1000));
             };
 
-            $scope.executeInstance = function(id) {
-                console.log('---exec SPECIFIC instance ', id);
-                $scope.background = false;
-                $scope.currentInstanceId = id;
-            };
-
-            $scope.init = function() {
-                console.log('ContentController scope init');
-                $scope.executeNextInstance();
-            };
 
             $scope.nextApp = function() {
                 $scope.currentInstanceIndex++;

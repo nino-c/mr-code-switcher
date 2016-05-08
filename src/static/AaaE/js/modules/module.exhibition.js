@@ -76,8 +76,8 @@ angular.module('Exhibition', [
     $http.defaults.xsrfCookieName = 'csrftoken';
     $http.defaults.xsrfHeaderName = 'X-CSRFToken';
 
-    $rootScope.showBGCanvas = true;
-    $rootScope.showAppCanvas = false;
+    // $rootScope.showBGCanvas = true;   <--------- now obsolete
+    // $rootScope.showAppCanvas = false; <--------- now obsolete
     $rootScope.isAngularApp = true;
     $rootScope.showBottom = false;
     $rootScope.topScope = null;
@@ -88,16 +88,16 @@ angular.module('Exhibition', [
 
       history.push($location.$$path);
 
-      if ($location.path().indexOf('/instance/') == -1) {
-        $rootScope.showAppCanvas = false;
-        $rootScope.showBGCanvas = true;
-      } else {
-        $rootScope.showAppCanvas = true;
-        $rootScope.showBGCanvas = false;
-      }
-      if ($location.path().indexOf('/accounts/') > -1) {
-        $rootScope.isAngularApp = false;
-      } else $rootScope.isAngularApp = true;
+    //   if ($location.path().indexOf('/instance/') == -1) {
+    //     $rootScope.showAppCanvas = false;
+    //     $rootScope.showBGCanvas = true;
+    //   } else {
+    //     $rootScope.showAppCanvas = true;
+    //     $rootScope.showBGCanvas = false;
+    //   }
+    //   if ($location.path().indexOf('/accounts/') > -1) {
+    //     $rootScope.isAngularApp = false;
+    //   } else $rootScope.isAngularApp = true;
 
 
     })
@@ -113,9 +113,6 @@ angular.module('Exhibition', [
 
     $rootScope.$on('$routeChangeSuccess', function() {
         history.push($location.$$path);
-        $timeout(function() {
-          MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
-        }, 500);
     });
 
     $rootScope.goHome = function() {
@@ -134,9 +131,18 @@ angular.module('Exhibition', [
           .textContent(message)
           .position('top')
         );
+    };
+
+    $rootScope.refreshMathJax = function() {
+        $timeout(function() {
+          MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+        }, 500);
+    }
+
+    $window.renderingDone = function() {
+        console.log('renderingDone, $rootScope level');
     }
 
     $rootScope.hideXS = $window.innerWidth < 400 ? "display: 'none';" : "";
-    //$rootScope.hideShort = $window.innerHeight < 500 ? "display: 'none';" : "";
 
   });

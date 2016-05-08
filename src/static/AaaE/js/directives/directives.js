@@ -223,8 +223,7 @@ angular.module('Exhibition')
                 currentInstanceId: '='
             },
             link: function ($scope, element, attrs) {
-                console.log($scope.$parent);
-                $scope.$parent.$watch('currentInstanceId', function(instanceId) {
+                $rootScope.topScope.$watch('currentInstanceId', function(instanceId) {
 
                     if (!instanceId) return;
                     console.log('$watch currentInstanceId', instanceId);
