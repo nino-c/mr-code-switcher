@@ -1,15 +1,15 @@
 angular
 	.module('Exhibition')
-	.controller('ContentController', ['$rootScope', '$scope', '$timeout', 
+	.controller('ContentController', ['$rootScope', '$scope', '$timeout',
         function($rootScope, $scope, $timeout) {
-		
+
             $rootScope.topScope = $scope;
 
             $scope.featuredApps = [[849, 15], [121,7]];
             $scope.currentInstanceIndex = 0;
             $scope.currentInstanceId = $scope.featuredApps[0][0];
             $scope.background = true;
-            
+
 
             $scope.executeNextInstance = function() {
                 console.log('---exec NEXT instance ' + $scope.currentInstanceIndex.toString());
@@ -30,7 +30,7 @@ angular
             $scope.init = function() {
                 console.log('ContentController scope init');
                 $scope.executeNextInstance();
-            };	
+            };
 
             $scope.nextApp = function() {
                 $scope.currentInstanceIndex++;
@@ -38,6 +38,6 @@ angular
                 $scope.executeNextInstance();
             };
 
-            
-		
+
+
 	   }]);

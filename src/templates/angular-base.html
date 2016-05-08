@@ -1,8 +1,7 @@
-{% load staticfiles %} 
+{% load staticfiles %}
 {% load thumbnail %}
 <!doctype html>
 <html{% if isAngularApp %} ng-app="Exhibition" {% else %} ng-app="DummyApp" {% endif %}>
-
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -16,8 +15,6 @@
         <meta property="og:title" content="∀aa∃ :: Apps at an Exhibition">
         <meta property="og:description" content="Mr. Code-switcher :: he who code-switched up-on the word 'code-switching' itself.">
 
-        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous" /> -->
-        
         <link rel="stylesheet" href="/static/site/css/bootstrap.css" />
         <link rel="stylesheet" href="/static/site/css/roboto-font.css" />
         <link rel="stylesheet" href="/static/site/css/material-icons.css" />
@@ -26,6 +23,9 @@
         <!-- <link rel="stylesheet" type="text/css" href="/static/AaaE/lib/codemirror/theme/night.css" />
         <link rel="stylesheet" type="text/css" href="/static/AaaE/lib/codemirror/theme/monokai.css" /> -->
         <link rel="stylesheet" type="text/css" href="/static/node/angular-bootstrap-colorpicker/css/colorpicker.css" />
+
+        <!-- overrides and custom css -->
+        <link rel="stylesheet" href="/static/site/less/main.css" />
 
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
         <!-- <script src="http://jsconsole.com/js/remote.js?96c31669-fb81-45c7-b4e6-3bc05ee55ca3"></script> -->
@@ -65,10 +65,10 @@
         <script type="text/javascript" src="/static/AaaE/lib/codemirror/mode/javascript/javascript.js"></script>
         <script type="text/javascript" src="/static/AaaE/lib/codemirror/mode/coffeescript/coffeescript.js"></script>
 
-        <!--   <script type="text/javascript" src="/static/bower/gl-matrix/dist/gl-matrix-min.js"></script>
+        <!--  <script type="text/javascript" src="/static/bower/gl-matrix/dist/gl-matrix-min.js"></script>
         <script type="text/javascript" src="/static/AaaE/lib/gl-matrix/gl-matrix-shims.js"></script> -->
         <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.1.4/math.min.js"></script> -->
-        <!--   <script type="text/javascript" src="/static/site/js/jsgif/LZWEncoder.js"></script>
+        <!-- <script type="text/javascript" src="/static/site/js/jsgif/LZWEncoder.js"></script>
         <script type="text/javascript" src="/static/site/js/jsgif/NeuQuant.js"></script>
         <script type="text/javascript" src="/static/site/js/jsgif/GIFEncoder.js"></script>
         <script type="text/javascript" src="/static/site/js/jsgif/b64.js"></script>
@@ -76,7 +76,7 @@
 
         <script type="text/javascript" src="/static/AaaE/lib/sylvester/sylvester.js"></script>
         <script type="text/javascript" src="/static/AaaE/lib/sylvester/addons.js"></script>
-        
+
         <!-- <script src="/static/AaaE/lib/es6-shim/node_modules/es5-shim/es5-shim.js"></script>
         <script src="/static/AaaE/lib/es6-shim/node_modules/mocha/mocha.js"></script>
         <script src="/static/AaaE/lib/es6-shim/node_modules/chai/chai.js"></script>
@@ -84,12 +84,12 @@
 
         {% block extra_head_scripts %} {% endblock extra_head_scripts %}
 
-        <link rel="stylesheet" href="/static/site/less/main.css" />
+
         <script type="text/javascript">
         {% if user.is_authenticated %}
-        window.USER_ID = {{ user.id }}; 
+        window.USER_ID = {{ user.id }};
         {% else %}
-        window.USER_ID = null; 
+        window.USER_ID = null;
         {% endif %}
         window.RECORD_GIF = true;
         </script>
@@ -98,14 +98,16 @@
 
     </head>
 
-    <body data-spy="scroll" style="zoom: 1;" {% if isAngularApp %} ng-controller="ContentController" {% else %} ng-controller="ContentController2" {% endif %} ng-init="init()">
+    <body data-spy="scroll" style="zoom: 1;" {% if isAngularApp %}
+        ng-controller="ContentController" {% else %} ng-controller="ContentController2" {% endif %}
+        ng-init="init()">
 
         {% block angular_content %}
 
         <div ng-if="loading" class="loading-bg-base">
             <div class="loader-lg">
             <svg class="circular2">
-            <circle class="path" cx="125" cy="125" r="40" fill="none" stroke-width="4" 
+            <circle class="path" cx="125" cy="125" r="40" fill="none" stroke-width="4"
                 stroke-miterlimit="10"/>
             </svg>
               <div class="loading-text">Loading...</span></div>
@@ -114,49 +116,40 @@
 
         <md-toolbar md-whiteframe="3" ng-cloak>
             <div id="top-toolbar" layout="row" layout-align="center center">
-                <!-- <span onclick="window.location='/'" id="sub-brand" flex hide-xs>∀aa∃ :: Apps at an Exhibition</span> -->
-                <!-- <md-button class="md-small" ng-cloak ng-href="/">
-                <md-icon md-font-set="material-icons">code</md-icon>
-                </md-button> -->
 
-                  <span class="sub-brand" ng-click="goHome()" flex="grow">
-                    <!-- <span class="proposition" hide-xs>$(\forall x \in \text{app})\space( \exists y)\space y = \text{Exhibit}(x)$</span> -->
+                <span class="sub-brand" ng-click="goHome()" flex="grow">
                     <span flex hide-xs><!-- <span class="brand">∀aa∃</span> ::  -->Apps at an Exhibition</span>
                     <span flex hide-xs>::</span>
                     <span class="proposition" hide-xs>$(\forall x \in A)\space( \exists y)\space y = E(x)$</span>
-                    <!-- <span flex class="proposition" hide-xs>$\forall x \in \text{apps}$</span> -->
-                    <!-- $(\forall app)\space( \exists Exhibit)$ -->
-                    
-                    
                     <span class="device-xs" flex hide-gt-xs>Apps at an Exhibition</span>
-                  </span>
+                </span>
 
-                  <span flex="none">
+                <span flex="none">
 
                     {% if user.is_authenticated %}
                     <md-menu>
-                      <md-button ng-click="$mdOpenMenu()">
-                        <img src="{% thumbnail user.profile.picture|default:'default_profile.png' 30x30 crop %}" class="avatar" />
-                        {{ user.get_full_name|truncatechars:20 }}
-                        <span class="caret"></span>
-                      </md-button>
-                      <md-menu-content>
+                        <md-button ng-click="$mdOpenMenu()">
+                            <img src="{% thumbnail user.profile.picture|default:'default_profile.png' 30x30 crop %}" class="avatar" />
+                            {{ user.get_full_name|truncatechars:20 }}
+                            <span class="caret"></span>
+                        </md-button>
+                        <md-menu-content>
                           <md-menu-item>
                               <md-button href="{% url 'profiles:show_self' %}">Profile</md-button>
                           </md-menu-item>
                           <md-menu-item>
                               <md-button href="{% url 'accounts:logout' %}">Logout</md-button>
                           </md-menu-item>
-                      </md-menu-content>
-                      </md-menu>
-                      {% endif %} 
+                        </md-menu-content>
+                    </md-menu>
+                    {% endif %}
 
-                      {% if not user.is_authenticated %}
-                      <md-button class="md-button pull-right" ng-cloak ng-href="{% url 'accounts:login' %}">Log in</md-button>
-                      <!-- <md-button class="md-small" ng-cloak ng-href="{% url 'accounts:signup' %}" role="button">Register</md-button> -->
-                      {% endif %}
+                    {% if not user.is_authenticated %}
+                    <md-button class="md-button pull-right" ng-cloak ng-href="{% url 'accounts:login' %}">Log in</md-button>
+                    <!-- <md-button class="md-small" ng-cloak ng-href="{% url 'accounts:signup' %}" role="button">Register</md-button> -->
+                    {% endif %}
 
-                  </span>
+                </span>
 
 
 
@@ -164,33 +157,42 @@
         </md-toolbar>
 
         <md-content class="main-content">
-            <main ng-if="isAngularApp" class="main" role="main" flex>
-                <div ng-view class="flex"></div>
-            </main>
-            <div class="main" ng-if="!isAngularApp" role="main" flex>
-                <md-card>
+
+            <main ng-switch="isAngularApp" class="main" role="main" flex>
+                <div ng-switch-when="true">
+                    <div ng-view class="flex"></div>
+                </div>
+                <md-card ng-switch-when="false">
                     <md-card-content>
                         {% block accounts %} {% endblock accounts %}
                     </md-card-content>
                 </md-card>
-            </div>
+            </main>
+
+            <!-- bottom bar -->
+            <ng-include ng-if="(isAngularApp && showBottom)" src="'/static/AaaE/views/homepage.html'"></ng-include>
+
         </md-content>
 
         <footer class="footer-toolbar">
             &copy; 2016 Nino P. Cocchiarella <span>mrcodeswitcher.com</span>
         </footer>
-        
-        {% endblock angular_content %} 
+
+        {% endblock angular_content %}
 
         {% block bottomscripts %} {% endblock bottomscripts %}
 
+
+        <!-- The MAIN and ONLY canvas to be used -->
+        <!-- <div app-canvas source="source" dialect="dialect" seedcodelines="seedcodelines" loading="loading"></div> -->
+        <div id="canvas-container" app-canvas-instance instance-id="currentInstanceId" ></div>
+        <!-- The MAIN and ONLY canvas to be used -->
+
+        <!-- instead of: -->
         <!-- {% block iframe %}
         <iframe id="bg-iframe" src="/static/AaaE/iframe.html" frameborder="0" width="100%" height="100%" ng-show="showBGCanvas" scrolling="no"></iframe>
         {% endblock %}  -->
 
-        <!-- <div app-canvas source="source" dialect="dialect" seedcodelines="seedcodelines" loading="loading"></div> -->
-        <div id="canvas-container" app-canvas-instance instance-id="currentInstanceId" ></div>
-
     </body>
 
-    </html>
+</html>

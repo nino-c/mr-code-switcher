@@ -8,11 +8,11 @@ angular
         function($scope, $timeout, $location, $window, AppServiceMinimal) {
 
             $scope.showAppList = false;
+            $scope.showBottom = false;
             $scope.showSearch = false;
             $scope.loading = true;
 
             AppServiceMinimal.query().$promise.then(function(apps) {
-                console.log('apps', apps);
                 $scope.apps = apps;
                 $scope.loading = false;
                 //$scope.showAppList = true;
@@ -26,11 +26,10 @@ angular
 
             $scope.initAppList = function() {
                 console.log('AppList scope init');
-                //$scope.loading = false;
                 $scope.toggleAppList();
                 $timeout(function() {
                   $window.scrollTo(0,0);
-              });
+                });
 
             };
 

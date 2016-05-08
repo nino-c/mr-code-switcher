@@ -1,6 +1,6 @@
 angular
   .module('Exhibition')
-  .controller('InstancesController', [
+  .controller('AppInstancesController', [
     '$rootScope',
     '$scope',
     '$location',
@@ -17,6 +17,7 @@ angular
 
         $scope.loading = true;
         $scope.loadingInstances = true;
+        $scope.showBottom = false;
 
         AppServiceMinimal.get({id:$route.current.params.id})
             .$promise.then(function(app_min) {

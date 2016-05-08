@@ -16,6 +16,14 @@ angular.module('Exhibition')
             }
         }
     })
+    .directive('spacer', function() {
+        return {
+            template: function(elem, attrs) {
+                var height = attrs.height ? parseInt(attrs.height) : 10;
+                return '<div style="height:'+height+'px;"></div>';
+            }
+        }
+    })
     .directive('spinner', function() {
         return {
             restrict: 'EA',
@@ -111,7 +119,7 @@ angular.module('Exhibition')
                 scope.seedlings = [];
                 ngModel.$render = function() {
                     scope.seedlings = _.pairs(ngModel.$viewValue);
-                    console.log(scope.seedlings);
+                    //console.log(scope.seedlings);
                 }
             }
         }

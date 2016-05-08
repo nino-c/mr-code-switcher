@@ -1,6 +1,6 @@
 angular.module('Exhibition', [
   'ngRoute',
-  //'ui.bootstrap',
+  'ui.bootstrap',
   'ui.codemirror',
   'ngMaterial',
   'ngMessages',
@@ -12,6 +12,7 @@ angular.module('Exhibition', [
   'ng.deviceDetector',
   'ngSilent',
   'ngRoute',
+  //'mdRadioGroup'
   ])
   .value('ui.config', {
     codemirror: {
@@ -68,24 +69,23 @@ angular.module('Exhibition', [
         $resourceProvider.defaults.stripTrailingSlashes = false;
 
   })
-  .run(function($rootScope, $location, $http, $cookies, 
+  .run(function($rootScope, $location, $http, $cookies,
         $timeout, $mdToast, $window, AppService) {
 
     $http.defaults.headers.common['X-CSRFToken'] = $cookies['csrftoken'];
     $http.defaults.xsrfCookieName = 'csrftoken';
     $http.defaults.xsrfHeaderName = 'X-CSRFToken';
 
-    //console.log('cookies', $cookies.getAll())
-
     $rootScope.showBGCanvas = true;
     $rootScope.showAppCanvas = false;
     $rootScope.isAngularApp = true;
+    $rootScope.showBottom = false;
     $rootScope.topScope = null;
     $rootScope.currentInstance = {};
 
     var history = [];
     $rootScope.$on( "$routeChangeStart", function($event, next, current) {
-          
+
       history.push($location.$$path);
 
       if ($location.path().indexOf('/instance/') == -1) {
@@ -95,18 +95,17 @@ angular.module('Exhibition', [
         $rootScope.showAppCanvas = true;
         $rootScope.showBGCanvas = false;
       }
-      console.log($location.path());
       if ($location.path().indexOf('/accounts/') > -1) {
         $rootScope.isAngularApp = false;
       } else $rootScope.isAngularApp = true;
 
-      
+
     })
 
     // root-scope vars
     $rootScope.scriptTypes = [
-        'text/javascript', 
-        'text/coffeescript', 
+        'text/javascript',
+        'text/coffeescript',
         'text/paperscript'
       ]
 
@@ -139,5 +138,5 @@ angular.module('Exhibition', [
 
     $rootScope.hideXS = $window.innerWidth < 400 ? "display: 'none';" : "";
     //$rootScope.hideShort = $window.innerHeight < 500 ? "display: 'none';" : "";
- 
+
   });

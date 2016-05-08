@@ -289,6 +289,7 @@ h3 {
   line-height: 1.9em;
   letter-spacing: 0.2em;
   padding-right: 12px;
+  margin-top: 10px;
 }
 .app-titles .app-title-header:after {
   content: ":";

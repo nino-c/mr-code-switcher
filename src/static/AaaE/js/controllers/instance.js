@@ -17,13 +17,14 @@ angular
     'AppService',
     'InstanceService',
 
-    function ($rootScope, $window, $document, $scope, $interval, $location, $route, 
+    function ($rootScope, $window, $document, $scope, $interval, $location, $route,
         $resource, $mdToast, $timeout, $http, $mdDialog, $ngSilentLocation,
         AppService, InstanceService)  {
 
         var timer;
 
         $scope.loading = true;
+        $scope.showBottom = true;
         $scope.timeElapsed = 0;
         $scope.seedTouched = false;
         $scope.readyToSave = false;
@@ -52,11 +53,11 @@ angular
             })
 
         $scope.initialize = function() {
-            
+
             /*
                 set up functions callable from userpap API
             */
-            
+
             $window.renderingDone = function() {
                 $timeout(function() {
                     $scope.renderingDone();
@@ -70,10 +71,38 @@ angular
             $window.snapshot = function() {
                 $scope.shapshot();
             }
+        };
+
+        $scope.parseSeedVector = function(setToFalse) {
+            /*
+                creates _seed object from instance.seed:String
+                creates seedList object
+            */
+            $scope._seed = _.mapObject(
+                JSON.parse($scope.instance.seed), function(s) {
+                    if (s.parsing === undefined) s.parsing = false;
+                    if (setToFalse) s.parsing = false;
+
+                    if (s.type == "number") {
+                        s.value = parseInt(s.value);
+                    }
+                    return s;
+                });
+
+            $scope.seedList = _.pairs($scope._seed);
+
+            $timeout(function() {
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            }, 500);
         }
 
+        $scope.execute = function() {
+            $scope.parseSeedVector();
+            $rootScope.topScope.executeInstance($scope.instance.id);
+        };
+
         $scope.renderingDone = function() {
-            
+
             if ($scope.autosnapshot) {
                 $scope.snapshot();
                 $scope.autosnapshot = false;
@@ -118,12 +147,12 @@ angular
 
         };
 
-        
+
         $scope.featureDisplay = function(content, css) {
 
             if (!css)
                 css = {};
-            if (typeof content == 'string') 
+            if (typeof content == 'string')
                 content = [content];
 
             $scope.featureDisplayContent = content;
@@ -147,6 +176,8 @@ angular
             _.each($scope.seedList, function(seed) {
                 $scope._seed[seed[0]] = seed[1];
             })
+            $scope._seed = _.object($scope.seedList);
+
             $scope.instance.seed = JSON.stringify($scope._seed);
 
             /*
@@ -166,9 +197,9 @@ angular
 
                     return s;
                 });
-            
+
             $scope.seedList = _.pairs($scope._seed);
-            
+
             $timeout(function() {
                 MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
             }, 500);
@@ -182,7 +213,7 @@ angular
 
             $scope.loading = true;
             $scope.parseSeedList();
-            
+
             if ($scope.userLoggedIn) {
 
                 var req = {
@@ -195,14 +226,14 @@ angular
                 }
 
                 $http(req).then(function successCallback(response) {
-                    
+
                     console.log(response);
-                    
+
                     if (response.data.id) {
 
                         $scope.instance.id = response.data.id;
                         $route.current.params.instance_id = response.data.id;
-                        
+
                         $scope.clearCanvas();
                         $scope.clearPaperCanvas();
                         $scope.clearEvalScope();
@@ -212,24 +243,24 @@ angular
                         $scope.readyToSave = false;
 
                         if (response.data.alreadyExists) {
-                            $rootScope.toast("Seed-vector exists already."); 
-                            $scope.autosnapshot = false;   
+                            $rootScope.toast("Seed-vector exists already.");
+                            $scope.autosnapshot = false;
                         } else {
                             $rootScope.toast("Saved as new instance.");
                         }
-                        
+
                         var snapshot = response.data.alreadyExists ? false : true;
                         $scope.execute();
 
                     }
-                    
+
                 }, function errorCallback(response) {
                     console.log('error', response)
                 });
 
 
             } else {
-                
+
                 $scope.clearCanvas();
                 $scope.clearPaperCanvas();
                 $scope.clearEvalScope();
@@ -240,10 +271,10 @@ angular
 
                 $scope.execute();
             }
-           
+
         };
 
-        
+
 
         $scope.viewSource = function(ev) {
 
@@ -258,7 +289,7 @@ angular
             });
 
             function ViewSourceDialog($scope, $mdDialog, app) {
-                
+
                 $scope.initialize = function() {
 
                     var lang = app.scriptType.split('text/').join('');
@@ -298,9 +329,9 @@ angular
             });
 
             function DialogController($scope, $mdDialog) {
-                
-                $scope.initialize = function() {
 
+                $scope.initializeSeedEditor = function() {
+                    console.log('DialogController init');
                 }
 
                 $scope.closeDialog = function() {
@@ -325,7 +356,7 @@ angular
                     if ($scope.varyParam != null) {
                         $scope.cycleParam($scope.varyParam, $scope.varyMin, $scope.varyMax);
                     } else {
-                        $scope.updateInstance(true);    
+                        $scope.updateInstance(true);
                     }
                     $mdDialog.hide();
                 }
@@ -333,16 +364,25 @@ angular
             }
         }
 
-        $scope.execute = function() {
+        $scope.__execute = function() {
 
+            $scope._seed = _.mapObject(
+                JSON.parse($scope.instance.seed), function(s) {
+                    s.parsing = false;
+                    return s;
+                });
+
+            $scope.parseSeedList();
             $rootScope.topScope.executeInstance($scope.instance.id);
             return;
+
+            //////////// old function below
 
             if ($scope.instance.seed) {
 
                 $scope.__seed = JSON.parse($scope.instance.seed);
                 $scope._seed = _.mapObject(
-                    $scope.__seed, function(s) {
+                    JSON.parse($scope.instance.seed), function(s) {
                         s.parsing = false;
                         return s;
                     });
@@ -364,13 +404,13 @@ angular
                     seedcodelines.push( 'console.log(Canvas);' )
                     seedcodelines.push( 'console.log(canvas);' )
                 }
-                
+
                 // import seed attributes into local namespace
                 for (attr in $scope._seed) {
-                    
+
                     var line = '';
-                    var k = $scope.seedStructure[attr].varname ? 
-                                $scope.seedStructure[attr].varname : attr; 
+                    var k = $scope.seedStructure[attr].varname ?
+                                $scope.seedStructure[attr].varname : attr;
 
                     switch ($scope._seed[attr].type) {
                         case 'string':
@@ -419,16 +459,16 @@ angular
                 }
 
                 var source = seedcodelines.join("\n") + "\n"
-                    + required_codeblocks + "\n" 
+                    + required_codeblocks + "\n"
                     + $scope.instance.sourcecode;
 
-                var sourceWithoutSeedlines = required_codeblocks + "\n" 
+                var sourceWithoutSeedlines = required_codeblocks + "\n"
                     + $scope.instance.sourcecode;
 
                 //console.log(source)
 
                 if (coffee) {
-                    $scope.instance.sourcecode 
+                    $scope.instance.sourcecode
                         += "\ntry\n\twindow.start()\ncatch error\n\tconsole.log error"
                     source = CoffeeScript.compile($scope.instance.sourcecode);
                 } else {
@@ -471,7 +511,7 @@ angular
 
                 //     console.log(seedcodelines.join("\n"));
                 //     eval( seedcodelines.join("\n") );
-                    
+
                 //     $scope.gameFunction = new Function('Canvas', 'canvas', source)
                 //     $scope.gameFunction(Canvas, canvas)
                 //     $scope.loading = false;
@@ -480,18 +520,18 @@ angular
 
             }
         }
-    
+
 
         $scope.snapshot = function() {
 
             if (!USER_ID) { return; }
 
             //var canvas = $("#big-canvas");
-            var Canvas = $scope.dialect.indexOf('paperscript') > -1 ? 
+            var Canvas = $scope.dialect.indexOf('paperscript') > -1 ?
                 document.getElementById("paperscript-canvas") : document.getElementById("big-canvas");
 
             if (window._renderer) {
-                var snapshot = window._renderer.domElement.toDataURL("image/png");  
+                var snapshot = window._renderer.domElement.toDataURL("image/png");
             } else {
                 var snapshot = Canvas.toDataURL("image/png");
             }
@@ -508,7 +548,7 @@ angular
             );
         }
 
-        $scope.clearCanvas = function() { 
+        $scope.clearCanvas = function() {
             try {
                 var _canvas = document.getElementById('big-canvas');
                 if (_canvas) {
@@ -518,7 +558,7 @@ angular
                         context.fillRect(0,0,_canvas.width, _canvas.height);
                         context.clearRect(0,0,_canvas.width, _canvas.height);
                         console.log('clear canvas')
-                    }    
+                    }
                 }
             } catch (e) {
                 console.log(e);
@@ -541,26 +581,26 @@ angular
                         project.clear();
                     }
                 }
-            } catch (e) { console.log('clearPaperCanvas error', e); } 
+            } catch (e) { console.log('clearPaperCanvas error', e); }
         }
 
         $scope.clearEvalScope = function() {
-            
+
             $scope.source = null;
             $scope.seedcodelines = null;
             //$scope.dialect = null;
 
-            // try to delete all vars in scope of previously eval()-ed app 
+            // try to delete all vars in scope of previously eval()-ed app
             try {
                 window.appdestroy();
-            } catch (e) { 
-                console.log('no appdestroy()', e); 
+            } catch (e) {
+                console.log('no appdestroy()', e);
             };
 
             if ($scope.gameFunction) {
                 delete $scope.gameFunction;
                 console.log('deleting gameFunction')
-                
+
             }
         }
 
@@ -581,7 +621,7 @@ angular
         //     if ($scope.gameFunction) {
         //         delete $scope.gameFunction;
         //         console.log('deleting gameFunction')
-                
+
         //     }
         // }
 
