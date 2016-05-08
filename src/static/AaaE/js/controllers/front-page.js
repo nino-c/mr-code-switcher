@@ -1,6 +1,6 @@
 angular
     .module('Exhibition')
-    .controller('BottomController', ['$scope',
+    .controller('FrontPageController', ['$scope',
         '$location',
         '$timeout',
         '$window',
