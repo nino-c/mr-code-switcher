@@ -1,3 +1,5 @@
+// out: ./main.css
+
 @base-color: #3C763D;
 @slime-green: #91FF66;
 @pale-green: #CFFF8E;
@@ -5,6 +7,7 @@
 @lightgrey: #DEDEDE;
 @almost-clear: rgba(250, 250, 250, 0.8);
 @clear: rgba(255, 255, 255, 0);
+
 html,
 body {
     font-family: 'Roboto', sans-serif!important;
@@ -100,6 +103,10 @@ md-dialog {
     padding: 0px;
 }
 
+.no-margin {
+    margin: 0px;
+}
+
 .container-fluid {
     .no-padding;
 }
@@ -192,6 +199,11 @@ h3 {
 }
 
 
+.spacer {
+  height: 10px;
+}
+
+
 .app-list {
     .title {
         font-size: 1.3em;
@@ -231,6 +243,75 @@ h3 {
     }
 }
 
+.overlay-item {
+    position: absolute;
+    display: none;
+    padding: 10px;
+    color: rgba(220,220,220,0.9);
+}
+
+.overlay-bg {
+    background-color: transparent;
+    &:hover {
+        background-color: rgba(25,25,25,0.95);
+        img {
+            opacity: 0.4;
+        }
+        .overlay-item {
+            position: absolute;
+            display: block;
+        }
+    }
+}
+
+.seedline {
+    display: block;
+    strong {
+        display: inline-block;
+        margin-right: 6px;
+    }
+}
+
+.seed-list-value {
+    display: inline-block;
+    span {
+        .list-value {
+            display: inline;
+        }
+        .math {
+            display: inline;
+            letter-spacing: initial;
+        }
+    }
+}
+
+.float-right {
+    float: right;
+    margin: 0px 0px 15px 15px;
+}
+
+.image-grid {
+    background-color: rgba(250, 250, 250, 0.65);
+    padding: 0px;
+    width: 40%;
+    max-width: 250px;
+}
+
+.image-grid-xs {
+    .image-grid;
+    width: 100%;
+}
+
+.big-divide {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.text-smaller {
+    span {
+        font-size: 0.8em;
+    }
+}
 
 .footer-toolbar {
     padding: 3px;
@@ -759,7 +840,7 @@ canvas {
 /* Mixins
 /* ------------------------------------------- */
 /* ------------------------------------------- */
-/* Toggle Fade  
+/* Toggle Fade
 /* ------------------------------------------- */
 /* line 64, ../sass/ng-animation.scss */
 .toggle {
@@ -819,7 +900,7 @@ canvas {
 }
 
 /* ------------------------------------------- */
-/* Slide Top 
+/* Slide Top
 /* ------------------------------------------- */
 /* line 109, ../sass/ng-animation.scss */
 .slide-top {
@@ -903,7 +984,7 @@ canvas {
 }
 
 /* ------------------------------------------- */
-/* Slide Rigth 
+/* Slide Rigth
 /* ------------------------------------------- */
 /* line 163, ../sass/ng-animation.scss */
 .slide-right {
@@ -987,7 +1068,7 @@ canvas {
 }
 
 /* ------------------------------------------- */
-/* Slide Left 
+/* Slide Left
 /* ------------------------------------------- */
 /* line 217, ../sass/ng-animation.scss */
 .slide-left {
@@ -1155,7 +1236,7 @@ canvas {
 }
 
 /* ------------------------------------------- */
-/* Bouncy Slide Top 
+/* Bouncy Slide Top
 /* ------------------------------------------- */
 /* line 325, ../sass/ng-animation.scss */
 .bouncy-slide-top {
@@ -1243,7 +1324,7 @@ canvas {
 }
 
 /* ------------------------------------------- */
-/* Bouncy Slide Rigth 
+/* Bouncy Slide Rigth
 /* ------------------------------------------- */
 /* line 379, ../sass/ng-animation.scss */
 .bouncy-slide-right {
@@ -1331,7 +1412,7 @@ canvas {
 }
 
 /* ------------------------------------------- */
-/* Bouncy Slide Left 
+/* Bouncy Slide Left
 /* ------------------------------------------- */
 /* line 434, ../sass/ng-animation.scss */
 .bouncy-slide-left {
@@ -1507,7 +1588,7 @@ canvas {
 }
 
 /* ------------------------------------------- */
-/* Scale Fade 
+/* Scale Fade
 /* ------------------------------------------- */
 /* line 544, ../sass/ng-animation.scss */
 .scale-fade {
@@ -1591,7 +1672,7 @@ canvas {
 }
 
 /* ------------------------------------------- */
-/* Spin Fade 
+/* Spin Fade
 /* ------------------------------------------- */
 /* line 598, ../sass/ng-animation.scss */
 .spin-toggle {
@@ -1675,7 +1756,7 @@ canvas {
 }
 
 /* ------------------------------------------- */
-/* Scale in Fade 
+/* Scale in Fade
 /* ------------------------------------------- */
 /* line 653, ../sass/ng-animation.scss */
 .scale-fade-in {
@@ -1759,7 +1840,7 @@ canvas {
 }
 
 /* ------------------------------------------- */
-/* Bouncy Scale in Fade 
+/* Bouncy Scale in Fade
 /* ------------------------------------------- */
 /* line 708, ../sass/ng-animation.scss */
 .bouncy-scale-in {
@@ -1847,7 +1928,7 @@ canvas {
 }
 
 /* ------------------------------------------- */
-/* Flip In 
+/* Flip In
 /* ------------------------------------------- */
 /* line 763, ../sass/ng-animation.scss */
 .flip-in {
@@ -1931,7 +2012,7 @@ canvas {
 }
 
 /* ------------------------------------------- */
-/* Rotate In 
+/* Rotate In
 /* ------------------------------------------- */
 /* line 817, ../sass/ng-animation.scss */
 .rotate-in {

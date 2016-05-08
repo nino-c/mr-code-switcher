@@ -1,10 +1,11 @@
 angular
     .module('Exhibition')
-    .controller('FrontPageController', ['$scope', 
-        '$location', 
+    .controller('FrontPageController', ['$scope',
+        '$location',
         '$timeout',
-        function($scope, $location, $timeout) {
-        
+        '$window',
+        function($scope, $location, $timeout, $window) {
+
             $scope.showPanel = false;
             $scope.loading = true;
 
@@ -26,6 +27,9 @@ angular
                 });
             };
 
+            $window.renderingDone = function() {
+                console.log('renderingDone');
+            }
+
 
         }]);
-    

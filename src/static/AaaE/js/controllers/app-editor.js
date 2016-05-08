@@ -1,15 +1,20 @@
 angular
     .module('Exhibition')
-    .controller('AppEditorController', ['$rootScope', '$scope', 
-        '$location', '$route', '$mdToast', '$interval', 
-        '$timeout', 
-        'AppService', 
+    .controller('AppEditorController', ['$rootScope',
+        '$scope',
+        '$location',
+        '$route',
+        '$mdToast',
+        '$interval',
+        '$timeout',
+        '$window',
+        'AppService',
         'CategoryService',
         'CodeModuleService',
-        function($rootScope, $scope, $location, $route, 
-            $mdToast, $interval, $timeout,
+        function($rootScope, $scope, $location, $route,
+            $mdToast, $interval, $timeout, $window,
             AppService, CategoryService, CodeModuleService) {
-            
+
             $scope.isLoading = true;
             $scope.categories = CategoryService.query()
             $scope.codeModules = CodeModuleService.query()
@@ -35,7 +40,7 @@ angular
                     $scope.editor1 = true;
                     $scope.editor2 = true;
                 }, 500)
-                
+
             } else {
 
                 $scope.app = AppService.get({id:$route.current.params.id})
@@ -73,7 +78,7 @@ angular
 
             $scope.cancel = function() {
                 $location.path('/apps/'+$scope.app.id);
-            }            
+            };
 
             $scope.saveapp = function(event) {
 
@@ -101,6 +106,12 @@ angular
                             $location.path('/apps/'+app.id)
                         })
                 }
-            }
+            };
+
+            $scope.initializeEditor = function () {
+                $timeout(function() {
+                  $window.scrollTo(0,0);
+                })
+            };
 
         }])

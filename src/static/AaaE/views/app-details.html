@@ -4,7 +4,7 @@
     <div ng-if="loading" class="loading-bg-base">
         <div class="loader-lg">
             <svg class="circular2">
-            <circle class="path" cx="125" cy="125" r="40" fill="none" stroke-width="4" 
+            <circle class="path" cx="125" cy="125" r="40" fill="none" stroke-width="4"
                 stroke-miterlimit="10"/>
             </svg>
             <div class="loading-text">Loading...</span></div>
@@ -20,32 +20,12 @@
 
             <div layout="row">
                 <div flex="grow">
-                    <div>by <strong>{{ app.owner }}</strong></div>
+                    <div><strong>Author:</strong> {{app.owner.name}}</div>
                     <div><strong>Category:</strong> {{app.category}}</div>
                     <div class="text-muted">created @ {{ app.created }}</div>
-                    <hr />
-
-                    <div layout="row">
-                        <div ng-if="userLoggedIn">
-                            <md-button class="md-raised md-primary"  
-                                ng-href="#/apps/{{ app.id }}/edit/" 
-                                role="button" layout-align="center center">
-                                <md-icon md-font-set="material-icons">&#xE254;</md-icon>
-                                <span>Edit</span>
-                            </md-button>
-
-                            <md-button class="md-raised md-warn"  
-                                href="#/apps/{{ app.id }}/edit/" 
-                                role="button" layout-align="center center"
-                                ng-click="delete()">
-                                <md-icon md-font-set="material-icons">&#xE872;</md-icon>
-                                <span>Delete</span>
-                            </md-button>
-                        </div>
-                    </div>
                 </div>
                 <div flex="none">
-                    <md-button class="md-raised md-accent"  
+                    <md-button class="md-raised md-accent"
                         ng-click="selectFirstInstance()"
                         role="button" layout-align="center center">
                         <md-icon md-font-set="material-icons" ng-cloak>play_circle_outline</md-icon>
@@ -54,110 +34,130 @@
                 </div>
             </div>
 
-          
-            
-                
+            <md-divider class="big-divide"></md-divider>
 
-                <div class="caption">
-                    <p ng-bind-html="app.description | truncateTextWithLink:600"></p>
-                </div>
+            <div ng-if="userLoggedIn" layout="row">
+                <md-button class="md-raised md-primary"
+                    ng-href="#/apps/{{ app.id }}/edit/"
+                    role="button" layout-align="center center">
+                    <md-icon md-font-set="material-icons">&#xE254;</md-icon>
+                    <span>Edit</span>
+                </md-button>
+
+                <md-button class="md-raised md-warn"
+                    href="#/apps/{{ app.id }}/edit/"
+                    role="button" layout-align="center center"
+                    ng-click="delete()">
+                    <md-icon md-font-set="material-icons">&#xE872;</md-icon>
+                    <span>Delete</span>
+                </md-button>
+            </div>
+
+            <div class="spacer"></div>
+
+            <div class="caption">
+                <!-- <div class="image-grid float-right" hide-xs>
+                    <md-grid-list md-cols="3" md-row-height="1:1" md-gutter="2px">
+                        <md-grid-tile ng-repeat="im in app.images | limit:9">
+                            <img src="/media/{{ im | thumbnail:125 }}" style="max-width:100%; height:auto; border:1px solid #ddd;" />
+                        </md-grid-tile>
+                    </md-grid-list>
+                </div> -->
+                <p ng-repeat="paragraph in app.description|splitLines track by $index">{{ paragraph }}</p>
+            </div>
+
+            <p hide-gt-xs></p>
 
 
-                
-
-                <p hide-gt-xs></p>
-
-                
                 <!-- <div flex="5"></div>
                 <div flex="none">
-                
+
                     <div style="width:300px; float: right;" ng-if="images.length > 0">
                         <md-grid-list md-cols="3"
                             md-row-height="100px" md-gutter="0px">
                             <md-grid-tile ng-repeat="image in images | limit:9">
-                                <img ng-src="/media/{{ image | thumbnail:125 }}" 
+                                <img ng-src="/media/{{ image | thumbnail:125 }}"
                                     class="thumbnail thumbnail-med" width="100" height="100" />
                             </md-grid-tile>
                         </md-grid-list>
                     </div>
 
                 </div> -->
-            
-            
+
+
 
             <h3>Instances</h3>
 
 
-            <md-content layout-wrap>
-                
-                <!-- <div class="text-muted">Loading instances...</div> -->
+            <md-content layout="column">
+
                 <md-progress-linear md-mode="indeterminate" ng-disabled="!loadingInstances"></md-progress-linear>
 
-                <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 no-padding"
-                    ng-repeat="instance in instances">
+                <div layout="row" layout-wrap>
+                    <div ng-repeat="instance in instances track by $index"
+                        class="col-xs-4 col-sm-3 col-md-2 col-lg-2 no-padding">
 
-                    <md-card ng-click="selectInstance(instance.id)">
-                        
-                        <img ng-if="instance.images.length > 0" 
-                            ng-src="/media/{{ instance.images[0] | thumbnail:200 }}" 
-                            class="thumbnail thumbnail-lg nomargin" />
-                        
-                        <md-card-content>
+                        <md-card ng-click="selectInstance(instance.id)">
+                            <md-card-content class="no-padding overlay-bg">
 
-                            <h5>Seed:</h5>
-                            <div ng-repeat="seedling in instance.seedlist">
-                                <div>
-                                    <em>{{ seedling[0] }}:</em> 
-                         
+                                <div class="overlay-item">
+                                    <!-- <h5>Seed:</h5> -->
+                                    <seed-list ng-model="instance._seed"></seed-list>
+                                    <!-- <div ng-repeat="seedling in instance.seedlist">
+                                        <div>
+                                            <em>{{ seedling[0] }}:</em>
 
-                                        <span ng-if="!seedling[1].type || seedling[1].type == 'string' || seedling[1].type == 'number'" 
-                                            class="text-muted">{{ seedling[1].value }}</span>
-                                        
-                                       
-                                        <div ng-if="seedling[1].type == 'color'" 
-                                            style="display: inline-block; background-color: {{ seedling[1].value }}; 
-                                            width: 15px; height: 15px;"></div>
-                                        
-                                        
-                                        <span ng-if="seedling[1].type == 'math'" class="text-muted">
-                                        ${{ seedling[1].latex }}$
-                                        </span>
+                                            <span ng-if="!seedling[1].type || seedling[1].type == 'string' || seedling[1].type == 'number'"
+                                                class="text-muted">{{ seedling[1].value }}</span>
 
-                                        <span ng-if="seedling[1].type == 'javascript'" class="text-muted">
-                                        {{ seedling[1].value }}
-                                        </span>
-                                    
+                                            <div ng-if="seedling[1].type == 'color'"
+                                                style="display: inline-block; background-color: {{ seedling[1].value }};
+                                                width: 15px; height: 15px;"></div>
+
+                                            <span ng-if="seedling[1].type == 'math'" class="text-muted">
+                                            ${{ seedling[1].latex }}$
+                                            </span>
+
+                                            <span ng-if="seedling[1].type == 'javascript'" class="text-muted">
+                                            {{ seedling[1].value }}
+                                            </span>
+
+                                        </div>
+                                    </div> -->
                                 </div>
-                            </div>
-                        
-                        </md-card-content>
-                        
-                        <md-card-actions ng-if="userLoggedIn">
-                            <md-button class="md-small pull-right" 
-                                ng-click="deleteInstance($event, instance)"
-                                data-id="{{instance.id}}" 
-                                role="button">Delete</md-button>
-                            <!-- <a class="btn btn-danger pull-right" 
-                                ng-click="deleteInstance($event, instance)"
-                                data-id="{{instance.id}}"
-                                role="button"><span class="glyphicon glyphicon-remove"></span>
-                                Delete</a> -->
-                        </md-card-actions>
 
-                       
-                    </md-card>
+                                <img ng-if="instance.images.length > 0"
+                                    ng-src="/media/{{ instance.images[0] | thumbnail:200 }}"
+                                    class="thumbnail thumbnail-lg nomargin" />
 
+
+                            </md-card-content>
+                            <md-card-actions ng-if="userLoggedIn" class="no-margin text-smaller">
+                                <md-button class="md-small pull-right"
+                                    ng-click="deleteInstance($event, instance)"
+                                    data-id="{{instance.id}}"
+                                    role="button">Delete</md-button>
+                                <!-- <a class="btn btn-danger pull-right"
+                                    ng-click="deleteInstance($event, instance)"
+                                    data-id="{{instance.id}}"
+                                    role="button"><span class="glyphicon glyphicon-remove"></span>
+                                    Delete</a> -->
+                            </md-card-actions>
+
+                        </md-card>
+
+                    </div>
                 </div>
-                
-            </md-content>
-           
 
-            
-           
-           
+            </md-content>
+
+
+
+
+
             <div ng-if="app.instances.length == 0">
-                
-                <md-button class="md-raised md-primary"  
+
+                <md-button class="md-raised md-primary"
                     ng-click="instantiate()"
                     role="button" layout-align="center center">
                     <md-icon md-font-set="material-icons">add_circle</md-icon>
@@ -169,6 +169,6 @@
     </md-card>
 
 
-            
+
 
 </md-content>

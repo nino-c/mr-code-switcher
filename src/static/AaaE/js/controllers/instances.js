@@ -2,14 +2,14 @@ angular
   .module('Exhibition')
   .controller('InstancesController', [
     '$rootScope',
-    '$scope', 
-    '$location', 
-    '$route', 
+    '$scope',
+    '$location',
+    '$route',
     '$http',
     '$window',
     '$mdToast',
     '$timeout',
-    'OrderedInstanceService',  
+    'OrderedInstanceService',
     'AppServiceMinimal',
     'InstanceService',
     function ($rootScope, $scope, $location, $route, $http, $window, $mdToast, $timeout,
@@ -22,19 +22,17 @@ angular
             .$promise.then(function(app_min) {
 
                 $scope.app = app_min;
-                $scope.loading = false;                
+                $scope.loading = false;
 
                 if ($scope.app.instance_count == 0) return;
 
                 OrderedInstanceService.query({id:$route.current.params.id})
                     .$promise.then(function(instances) {
-                        
-                        $scope.instances = instances;
 
-                        for (var i=0; i<$scope.instances.length; i++) {
-                            $scope.instances[i]._seed = JSON.parse($scope.instances[i].seed);
-                            $scope.instances[i].seedlist = _.pairs($scope.instances[i]._seed); 
-                        }
+                        $scope.instances = _.map(instances, function(inst) {
+                          inst._seed = JSON.parse(inst.seed);
+                          return inst;
+                        });
 
                         $scope.loadingInstances = false;
 
@@ -61,7 +59,7 @@ angular
         };
 
         $scope.playApp = function() {
-            
+
         }
 
         $scope.selectInstance = function(instance_id) {
@@ -78,20 +76,20 @@ angular
             }
 
             $http(req).then(function successCallback(response) {
-                
+
                 console.log(response);
-                
+
                 if (response.data.id) {
 
                     $location.path('/instance/'+$scope.app.id+'/'+response.data.id+'/');
                     $rootScope.toast("New instance created");
 
                 }
-                
+
             }, function errorCallback(response) {
                 console.log('error', response)
             });
-           
+
         };
 
         $scope.delete = function() {
@@ -107,12 +105,12 @@ angular
         };
 
     $scope.deleteInstance = function($event, instance) {
-        
+
         $event.stopPropagation();
         $event.preventDefault();
 
         if (confirm("Are you sure you want to delete this instance?")) {
-          
+
             InstanceService.remove({id:instance.id}, function(response) {
                 console.log('deleted', response)
                 $scope.app.instances = _.reject(
@@ -124,6 +122,10 @@ angular
         }
     };
 
-   
+    $window.renderingDone = function() {
+        console.log('renderingDone');
+    }
+
+
   }
 ])

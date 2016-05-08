@@ -3,7 +3,7 @@ angular.module('Exhibition')
         return {
             require: 'ngModel',
             link: function(scope, elem, attrs, ctrl) {
-                ctrl.$validators.validateJson = 
+                ctrl.$validators.validateJson =
                     function(modelValue, viewValue) {
 
                         try {
@@ -34,18 +34,18 @@ angular.module('Exhibition')
     })
     .directive('colorbox', ['$scope', function($scope) {
         return {
-            require: '?ngModel',
+            //require: '?ngModel',
             scope: {
                 hex: '='
             },
             template:function(elem, attr) {
-                
+
                 '<div style="background-color: {{ hex }}; width: 15px; height: '
                     +'15px; border: 2px solid #dddddd;"></div>'
             },
-            link: function($scope, elem, attrs, ngModel) {
-                console.log('link', elem, attrs)
-            }
+            // link: function($scope, elem, attrs, ngModel) {
+            //     console.log('link', elem, attrs)
+            // }
         }
     }])
     .directive('hideShort', ['$window', function($window) {
@@ -67,6 +67,55 @@ angular.module('Exhibition')
             }
         }
     }])
+    .directive('seedListValue', function() {
+        return {
+            restrict: 'E',
+            require: 'ngModel',
+            scope: {
+                value: '@',
+                type: '@'
+            },
+            template: '<span ng-switch="type" class="seed-list-value">'
+                        + '<span ng-switch-when="color" class="list-value">'
+                            + '<colorbox hex="{{ value }}"></colorbox>'
+                        + '</span>'
+                        + '<span ng-switch-when="math" class="math">'
+                            + '${{ value }}$'
+                        + '</span>'
+                        + '<span ng-switch-default class="list-value">'
+                            + '{{ value }}'
+                        + '</span>'
+                    + '</span>',
+            link: function(scope, element, attrs, ngModel) {
+                ngModel.$render = function() {
+                    scope.type = ngModel.$viewValue.type;
+                    scope.value = ngModel.$viewValue.value;
+                }
+            }
+        }
+    })
+    .directive('seedList', ['$compile', function($compile) {
+        return {
+            restrict: 'E',
+            replace: true,
+            require: 'ngModel',
+            scope: {
+                seedlings: '@'
+            },
+            transclude: true,
+            template: '<div><div ng-repeat="seedling in seedlings" class="seedline">'
+                + '<strong>{{ seedling[0] }}:</strong>'
+                + '<seed-list-value ng-model="seedling[1]"></seed-list-value>'
+                + '</div></div>',
+            link: function(scope, element, attrs, ngModel) {
+                scope.seedlings = [];
+                ngModel.$render = function() {
+                    scope.seedlings = _.pairs(ngModel.$viewValue);
+                    console.log(scope.seedlings);
+                }
+            }
+        }
+    }])
     .directive('draw', function () {
         return {
             restrict: 'A',
@@ -80,7 +129,7 @@ angular.module('Exhibition')
                 }
 
                 initPaper();
-            
+
             }
         }
     })
@@ -145,7 +194,7 @@ angular.module('Exhibition')
 
                                 eval($scope.seedcodelines );
 
-                                
+
                                 $scope.gameFunction = new Function('Canvas', val);
                                 $scope.gameFunction(Canvas);
                                 $scope.loading = false;
@@ -168,7 +217,7 @@ angular.module('Exhibition')
             link: function ($scope, element, attrs) {
                 console.log($scope.$parent);
                 $scope.$parent.$watch('currentInstanceId', function(instanceId) {
-                    
+
                     if (!instanceId) return;
                     console.log('$watch currentInstanceId', instanceId);
 
@@ -181,7 +230,7 @@ angular.module('Exhibition')
                             var dialect = instance.game.scriptType;
                             var seedStructure = JSON.parse(instance.game.seedStructure);
                             var seed = JSON.parse(instance.seed);
-                            
+
                             // prepare code to eval
                             // line-by-line for the system-generated part
                             var seedcodelines = [];
@@ -197,13 +246,13 @@ angular.module('Exhibition')
                                 seedcodelines.push( 'console.log(Canvas);' )
                                 seedcodelines.push( 'console.log(canvas);' )
                             }
-                            
+
                             // import seed attributes into local namespace
                             for (attr in seed) {
-                                
+
                                 var line = '';
-                                var k = seedStructure[attr].varname ? 
-                                            seedStructure[attr].varname : attr; 
+                                var k = seedStructure[attr].varname ?
+                                            seedStructure[attr].varname : attr;
 
                                 switch (seed[attr].type) {
                                     case 'string':
@@ -229,6 +278,8 @@ angular.module('Exhibition')
 
                             }
 
+
+
                             var required_codeblocks = '';
                             if (instance.game.required_modules.length > 0) {
                                 required_codeblocks = _.map(
@@ -237,9 +288,32 @@ angular.module('Exhibition')
                                     }).join("\n\n");
                             }
 
-                            source = seedcodelines.join("\n") + "\n"
-                                + required_codeblocks + "\n" 
-                                + instance.sourcecode;
+                            if (dialect == 'text/coffeescript') {
+
+                                var coffee_seedcodelines = _.map(seedcodelines, function(line) {
+                                    return line.split('var ').join('').split(';').join('');
+                                });
+
+                                instance.sourcecode += "\ntry\n\twindow.start()\ncatch error\n\tconsole.log error";
+                                instance.sourcecode = CoffeeScript.compile(instance.sourcecode);
+                                var source = seedcodelines.join("\n") + "\n"
+                                    //+ required_codeblocks + "\n"
+                                    + instance.sourcecode;
+
+                            } else {
+                                instance.sourcecode += "\n try { window.start(); } catch(e) {}"
+                                var source = seedcodelines.join("\n") + "\n"
+                                    + required_codeblocks + "\n"
+                                    + instance.sourcecode;
+                            }
+
+
+
+
+
+                            if (source.indexOf('window.renderingDone()') == -1) {
+                                source += "\n\nwindow.renderingDone()";
+                            }
 
                             switch (dialect) {
                                 case 'text/paperscript':
@@ -268,20 +342,23 @@ angular.module('Exhibition')
 
                                     eval(seedcodelines );
 
-                                    
-                                    gameFunction = new Function('Canvas', source);
-                                    gameFunction(Canvas);
+                                    var Canvas = angular.element(element);
+                                    console.log('Canvas', Canvas);
+                                    //gameFunction = new Function('Canvas', source);
+                                    //gameFunction(Canvas);
+                                    console.log(source);
+                                    eval(source);
                                     loading = false;
 
                                 break;
                             }
 
                         });
-                
+
 
                 })
-                
-  
+
+
 
             }
         };
@@ -302,11 +379,11 @@ angular.module('Exhibition')
     //         //transclude: true,
     //         link: function postLink($scope, element, attrs) {
     //             console.log('ss', $scope, element, attrs)
-                
+
     //             function applyCSS() {
     //                 $(element[0]).css($scope.featureDisplayCSS);
     //             }
-                
+
     //             $scope.$watch("featureDisplayContent.length > 0", function(newValue) {
     //                 console.log('fff')
     //                 applyCSS();
@@ -319,20 +396,20 @@ angular.module('Exhibition')
     //     return {
     //         restrict: 'A',
     //         link: function postLink(scope, element, attrs) {
-    //             var parentElement = element.parent().parent(); 
+    //             var parentElement = element.parent().parent();
     //             console.log('fitImage', parentElement.width());
-    //         }    
+    //         }
     //     }
     // })
     .directive('adjustImage', function($window, $rootScope, $timeout) {
         return {
             restrict: 'A',
             link: function postLink(scope, element, attrs) {
-                
+
                 var win = angular.element($window);
                 var _basewidth = parseInt(attrs.basewidth);
                 var basewidth = _basewidth;
-                var parentElement = element.parent(); 
+                var parentElement = element.parent();
                 var transform_started = false;
 
                 function getCSSTotal(el, arg) {
@@ -351,7 +428,7 @@ angular.module('Exhibition')
 
                     transform_started = true;
 
-                    var parent_padding = getCSSTotal(parentElement, 'padding'); 
+                    var parent_padding = getCSSTotal(parentElement, 'padding');
                     var images = parentElement.children();
 
                     var basewidth_plus;
@@ -360,7 +437,7 @@ angular.module('Exhibition')
                             +  parseInt(getCSSTotal(angular.element(images[0]), 'padding'))
                             +  parseInt(getCSSTotal(angular.element(images[0]), 'border' ))
                             +  parseInt(getCSSTotal(angular.element(images[0]), 'margin' ));
-                        
+
                     } else {
                         basewidth_plus = basewidth;
                     }
@@ -368,12 +445,12 @@ angular.module('Exhibition')
                     function adjust() {
                         var elem_width = parentElement.width();
                         var im_per_row = Math.floor((elem_width - parent_padding) / basewidth_plus);
-                        var im_width = elem_width / im_per_row; 
+                        var im_width = elem_width / im_per_row;
                         var image_width = Math.floor(im_width - (basewidth_plus - basewidth));
-                            
+
                         _.each(images, function(im) {
                             $(im).css({
-                                width:image_width.toString()+'px', 
+                                width:image_width.toString()+'px',
                                 height:image_width.toString()+'px'
                             });
                         });
@@ -387,13 +464,13 @@ angular.module('Exhibition')
                     });
 
                 }
-                
+
                 $timeout(function() {
                     transform();
                 })
 
 
-                // causes directive to resize upon first pageload 
+                // causes directive to resize upon first pageload
                 scope.$watch('loading', function(val) {
                     if (!val && !transform_started) {
                         transform();
@@ -405,7 +482,7 @@ angular.module('Exhibition')
                         transform();
                     }
                 });
-                
+
             }
         }
     })
@@ -596,9 +673,9 @@ angular.module('Exhibition')
     //         },
     //         templateUrl: 'seedField.html',
     //         link: function(scope, elem, attrs, ctrl) {
-               
+
     //             $scope.$apply();
-                
+
     //             ctrl.seedChange = function() {
 
     //             }
@@ -612,7 +689,7 @@ angular.module('Exhibition')
     //         templateUrl: 'seedEditor.html',
     //         link: function(scope, elem, attrs, ngModel) {
     //             //ngModel.$render = function() {
-    //                 scope.seedlist = _.map(ngModel.$viewValue, 
+    //                 scope.seedlist = _.map(ngModel.$viewValue,
     //                     function(item) {
     //                         return {label: item[0], value: item[1].value}
     //                     })
@@ -621,7 +698,7 @@ angular.module('Exhibition')
     //         }
     //     }
     // })
- 
+
     // .directive('imageGrid', function($window, $timeout) {
     //         return {
     //             restrict: 'E',
@@ -631,8 +708,8 @@ angular.module('Exhibition')
     //                 return 'elemwidth: {{ elemwidth }} <div ng-repeat="im in images">im {{im}}</div>';
     //             },
     //             link: function(scope, element, attrs, ngModel) {
-                    
-    //                 var parentElement = element.parent(); 
+
+    //                 var parentElement = element.parent();
     //                 var _basewidth = (parseInt(attrs.basewidth) || 80);
     //                 var basewidth = _basewidth;
 
@@ -649,9 +726,9 @@ angular.module('Exhibition')
 
     //                 function adjust() {
     //                     var elemwidth = parentElement.width();
-    //                     var parent_padding = getCSSTotalWidth(parentElement, 'padding'); 
+    //                     var parent_padding = getCSSTotalWidth(parentElement, 'padding');
     //                     var im_per_row = Math.floor((elemwidth - parent_padding) / basewidth);
-    //                     var im_width = elemwidth / im_per_row; 
+    //                     var im_width = elemwidth / im_per_row;
     //                     //var image_width = Math.floor(im_width - (basewidth_plus - basewidth));
 
     //                     scope.images = attrs.images;
@@ -682,13 +759,13 @@ angular.module('Exhibition')
     //         __seed: '='
     //     },
     //     controller: function() {
-            
+
     //     },
     //     templateUrl: 'views/seedDisplay.html'
     // })
     // .directive('gameTimer', function() {
     //     return function(scope, element, attrs) {
-            
+
     //         restrict: 'E',
     //         scope: {},
     //         bindToController: {
@@ -699,7 +776,7 @@ angular.module('Exhibition')
     //             this.timeElapsed = 0;
     //             $scope.$watch('timeElapsed', function() {
     //                 this.timeElapsed = ((new Date()).getTime() - this.startTime.getTime()) / 1000;
-    //             }.bind(this)); 
+    //             }.bind(this));
     //         },
     //         controllerAs: 'ctrl',
     //         //bindToController: true,

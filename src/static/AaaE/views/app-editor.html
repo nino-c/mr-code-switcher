@@ -3,7 +3,7 @@
   <div ng-if="isLoading" class="loading-bg">
       <div class="loader">
         <svg class="circular">
-          <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" 
+          <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2"
               stroke-miterlimit="10"/>
         </svg>
       </div>
@@ -11,7 +11,7 @@
   </div>
 
   <md-card>
-    <md-card-content>
+    <md-card-content style="min-height: 550px;">
 
     <form name="appform">
 
@@ -29,7 +29,7 @@
           <md-input-container>
               <label>Category</label>
               <md-select ng-model="app.category">
-                <md-option ng-repeat="category in categories" 
+                <md-option ng-repeat="category in categories"
                   ng-value="category.name"
                   ng-selected="(category.name == app.category) ? true:false">{{category.name}}</md-option>
               </md-select>
@@ -42,77 +42,70 @@
             </md-input-container><br />
           <md-input-container>
             <label class="control-label">Description</label>
-          
+
               <textarea type="text" id="id_description"
                 ng-model="app.description"></textarea>
-           
+
           </md-input-container>
           <!-- <md-input-container>
             <label class="control-label">Code Modules</label>
                 <br /><br /><br />
-             
-                <md-checkbox ng-repeat="mod in codeModules" 
+
+                <md-checkbox ng-repeat="mod in codeModules"
                   ng-model="mod.selected" flex>{{ mod.title }}</md-checkbox>
-             
-           
+
+
           </md-input-container> -->
 
         </div>
         <div flex="grow" layout="column">
 
-          <div>
-
             <md-tabs md-dynamic-height md-border-bottom>
               <md-tab label="Source Code">
 
-                  <md-content style="max-height: 400px;">
+                  <md-content>
                    <!--  <div ng-if="isLoading">
                       <spinner />
                     </div> -->
                     <ui-codemirror ui-codemirror-opts="cmOptions"
-                      ng-model="app.source" 
-                      name="source" 
-                      ui-refresh="editor1">
+                      ng-model="app.source"
+                      name="source"
+                      ui-refresh="editor1" style="height: auto;">
                     </ui-codemirror>
-                  
+
                   </md-content>
 
               </md-tab>
               <md-tab label="Code Modules">
 
                 <md-content layout="column" layout-padding>
-                  
-                    <md-checkbox ng-repeat="mod in codeModules" 
+
+                    <md-checkbox ng-repeat="mod in codeModules"
                       ng-model="mod.selected" flex>{{ mod.title }}</md-checkbox>
-                  
+
                 </md-content>
 
               </md-tab>
               <md-tab label="Seed Structure">
 
                 <md-content>
-                
+
                   <span ng-show="appform.seedStructure.$error.validateJson"
                     class="form-error">Invalid JSON</span>
 
                   <ui-codemirror ui-codemirror-opts="cm2Options"
-                    name="seedStructure" 
+                    name="seedStructure"
                     ng-model-options="{updateOn: 'default blur'}"
                     validate-json
                     ng-model="app.seedStructure" ui-refresh="editor2">
                   </ui-codemirror>
 
                 </md-content>
-               
+
               </md-tab>
             </md-tabs>
 
-          </div>
 
-          
-
-          
-          
         </div>
       </md-content>
 
@@ -125,6 +118,6 @@
     <md-button class="md-success md-raised" md-ripple-size="full" ng-click="saveapp(event)">Save</md-button>
   </md-card-actions>
 </md-card>
-   
+
 
 </md-content>

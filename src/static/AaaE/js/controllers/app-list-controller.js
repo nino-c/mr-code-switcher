@@ -1,10 +1,11 @@
 angular
     .module('Exhibition')
-    .controller('AppListController', ['$scope', 
+    .controller('AppListController', ['$scope',
         '$timeout',
         '$location',
-        'AppServiceMinimal', 
-        function($scope, $timeout, $location, AppServiceMinimal) {
+        '$window',
+        'AppServiceMinimal',
+        function($scope, $timeout, $location, $window, AppServiceMinimal) {
 
             $scope.showAppList = false;
             $scope.showSearch = false;
@@ -27,6 +28,10 @@ angular
                 console.log('AppList scope init');
                 //$scope.loading = false;
                 $scope.toggleAppList();
+                $timeout(function() {
+                  $window.scrollTo(0,0);
+              });
+
             };
 
             $scope.toggleAppList = function() {
@@ -36,6 +41,10 @@ angular
             $scope.selectApp = function(chosenApp) {
                 //$scope.selectedApp = chosenApp
                 $location.path('/apps/'+chosenApp.id)
+            };
+
+            $window.renderingDone = function() {
+                console.log('renderingDone');
             }
-            
+
         }]);
