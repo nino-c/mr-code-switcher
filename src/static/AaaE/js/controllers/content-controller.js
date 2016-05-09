@@ -14,7 +14,6 @@ angular
 
             $rootScope.topScope = $scope;
 			$scope.loading = false;
-			$scope.showBottom = $rootScope.showBottom;
 
 			// vars for cycle of featured apps
             $scope.featuredApps = [[849, 15], [121,7]];
@@ -23,24 +22,23 @@ angular
             $scope.currentInstanceId = $scope.featuredApps[0][0];
 
 			$scope.init = function() {
-                console.log('ContentController <body> scope init');
+                console.log('ContentController::'+$rootScope.viewname+' scope init');
                 $scope.executeNextInstance();
-				$timeout(function() { $scope.toggleBottomBar(); }, 100);
             };
 
 			$scope.setCurrentInstance = function(id) {
+				if (id == $scope.currentInstanceId) {
+					$scope.currentInstanceId = 0;
+				}
 				console.log('setCurrentInstance = ', id);
-				$scope.currentInstanceId = id;
+				$timeout(function() {
+					$scope.currentInstanceId = id;
+				})
 			};
 
 			$scope.toggleBottomBar = function() {
-                $scope.showBottom = !$scope.showBottom;
-            };
-
-            $scope.browseApps = function($event) {
-                $location.path('/apps-list/');
-                $event.stopPropagation();
-                $scope.showBottom = false;
+                $rootScope.showBottom = !$rootScope.showBottom;
+				console.log('toggleBottomBar', $rootScope.showBottom);
             };
 
             $scope.executeNextInstance = function() {

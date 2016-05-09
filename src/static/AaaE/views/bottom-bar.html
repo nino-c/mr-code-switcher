@@ -1,42 +1,62 @@
-<div ng-controller="BottomBarController" class="headline-bottom slide-top"
-    md-whiteframe="6" ng-show="showPanel" ng-init="initBottomBar()">
+<div ng-controller="BottomBarController">
 
-    <div hide-xs hide-short>
-        <h2 hide-xs>Apps at an Exhibition</h2>
-        <md-divider hide-xs></md-divider>
+    <div class="headline-bottom slide-top" md-whiteframe="6" ng-show="showBottom" ng-init="initBottomBar()">
+
+        <div hide-xs hide-short ng-if="viewname == 'home'">
+            <h2 hide-xs>Apps at an Exhibition</h2>
+            <md-divider hide-xs></md-divider>
+        </div>
+
+        <md-content layout="column">
+
+            <div flex class="app-titles">
+                <!-- <div class="app-title-header"><strong>Featured App</strong></div> -->
+                <div class="app-title-text">{{ currentInstance.game.title }}</div>
+                <div class="app-subtitle-text">{{ currentInstance.game.subtitle }}</div>
+
+            </div>
+
+            <spacer hide-short />
+
+            <div ng-switch="viewname">
+                <div ng-switch-when="home" layout="row" layout-align-xs="space-between end" layout-align="end end">
+                    <md-button class="md-raised"
+                        ng-click="browseApps($event)"
+                        style="margin-left:0px;"
+                        role="button">
+                        <md-icon md-svg-src="/static/site/img/icons/ic_apps_black_24px.svg">apps</md-icon>
+                        <span>Browse Apps</span>
+                    </md-button>
+
+                    <md-button class="md-raised"
+                        ng-click="nextApp()"
+                        style="margin-left:0px;"
+                        role="button">
+                        <span>next</span>
+                        <md-icon md-svg-src="/static/site/img/icons/ic_arrow_forward_black_24px.svg">apps</md-icon>
+                    </md-button>
+                </div>
+                <div ng-switch-when="instance" layout="row" layout-align="end end">
+                    <md-button class="md-raised md-primary"
+                        ng-click="viewscope.snapshot()"
+                        ng-if="userLoggedIn" role="button">
+                      <span class="glyphicon glyphicon-camera"></span>
+                      <span class="button-label">Snapshot</span>
+                    </md-button>
+                    <md-button class="md-raised md-accent"
+                        ng-click="viewscope.viewSource()" role="button">
+                      <span class="glyphicon glyphicon-eye-open"></span>
+                      <span class="button-label">View source-code</span>
+                    </md-button>
+                </div>
+            </div>
+            <div layout="row" layout-align-xs="space-between end" layout-align="end end">
+
+
+            </div>
+
+        </md-content>
+
     </div>
-
-    <md-content layout="column">
-
-        <div flex class="app-titles">
-            <!-- <div class="app-title-header"><strong>Featured App</strong></div> -->
-            <div class="app-title-text">{{ currentInstance.game.title }}</div>
-            <div class="app-subtitle-text">{{ currentInstance.game.subtitle }}</div>
-
-        </div>
-
-        <spacer hide-short />
-
-        <div layout="row" layout-align-xs="space-between end" layout-align="end end">
-
-            <md-button class="md-raised"
-                ng-click="browseApps($event)"
-                style="margin-left:0px;"
-                role="button">
-                <md-icon md-svg-src="/static/site/img/icons/ic_apps_black_24px.svg">apps</md-icon>
-                <span>Browse Apps</span>
-            </md-button>
-
-            <md-button class="md-raised"
-                ng-click="nextApp()"
-                style="margin-left:0px;"
-                role="button">
-
-                <span>next</span>
-                <md-icon md-svg-src="/static/site/img/icons/ic_arrow_forward_black_24px.svg">apps</md-icon>
-            </md-button>
-        </div>
-
-    </md-content>
 
 </div>

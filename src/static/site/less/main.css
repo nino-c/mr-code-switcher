@@ -158,6 +158,13 @@ h3 {
 .headline-bottom .spacer {
   height: 10px;
 }
+.headline-bottom button {
+  color: #333333;
+}
+.headline-bottom button span.button-label,
+.headline-bottom button span.glyphicon {
+  color: #333333;
+}
 .spacer {
   height: 10px;
 }
@@ -410,10 +417,10 @@ h3 {
 }
 .feature-display {
   position: fixed;
-  top: 100px;
-  left: 50px;
+  top: 90px;
+  left: 30px;
   padding: 10px;
-  background-color: rgba(200, 200, 200, 0.5);
+  background-color: rgba(200, 200, 200, 0.4);
   border: 1px solid #cccccc;
 }
 .app-display:hover {
@@ -526,7 +533,7 @@ a.thumbnail.active {
   z-index: 1000;
   position: fixed;
   right: 20px;
-  top: 120px;
+  top: 90px;
   display: inline-block;
 }
 #shield {

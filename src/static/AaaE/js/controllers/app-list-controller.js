@@ -1,14 +1,14 @@
 angular
     .module('Exhibition')
-    .controller('AppListController', ['$scope',
+    .controller('AppListController', ['$rootScope',
+        '$scope',
         '$timeout',
         '$location',
         '$window',
         'AppServiceMinimal',
-        function($scope, $timeout, $location, $window, AppServiceMinimal) {
+        function($rootScope, $scope, $timeout, $location, $window, AppServiceMinimal) {
 
-            $scope.showAppList = false;
-            $scope.showBottom = false;
+            $scope.showAppList = true;
             $scope.showSearch = false;
             $scope.loading = true;
 
@@ -26,7 +26,8 @@ angular
 
             $scope.initAppList = function() {
                 console.log('AppList scope init');
-                $scope.toggleAppList();
+                $rootScope.showBottom = false;
+                //$scope.toggleAppList();
                 $timeout(function() {
                   $window.scrollTo(0,0);
                 });

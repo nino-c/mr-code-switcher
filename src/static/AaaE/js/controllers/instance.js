@@ -22,9 +22,11 @@ angular
         AppService, InstanceService)  {
 
         var timer;
+        $rootScope.viewscope = $scope;
+        $rootScope.showBottom = true;
+        $rootScope.viewname = 'instance';
 
         $scope.loading = true;
-        $scope.showBottom = true;
         $scope.timeElapsed = 0;
         $scope.seedTouched = false;
         $scope.readyToSave = false;
@@ -57,6 +59,8 @@ angular
             /*
                 set up functions callable from userpap API
             */
+
+            $rootScope.showBottom = true;
 
             $window.renderingDone = function() {
                 $timeout(function() {
@@ -91,17 +95,18 @@ angular
 
             $scope.seedList = _.pairs($scope._seed);
 
-            $timeout(function() {
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-            }, 500);
+            $scope.refreshMathJax();
+            console.log('rmj', $scope.refreshMathJax);
         }
 
         $scope.execute = function() {
             $scope.parseSeedVector();
-            $rootScope.topScope.executeInstance($scope.instance.id);
+            $rootScope.topScope.setCurrentInstance($scope.instance.id);
         };
 
         $scope.renderingDone = function() {
+
+            console.log('renderingDone');
 
             if ($scope.autosnapshot) {
                 $scope.snapshot();
@@ -161,9 +166,7 @@ angular
                     return key+':'+val+';';
                 }), function(a,b) { return a+b; }, '');
 
-            $timeout(function() {
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-            }, 500);
+
 
         };
 

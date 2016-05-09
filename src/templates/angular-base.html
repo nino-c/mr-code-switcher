@@ -99,18 +99,19 @@
     </head>
 
     <body data-spy="scroll" style="zoom: 1;" {% if isAngularApp %}
-        ng-controller="ContentController" {% else %} ng-controller="ContentController2" {% endif %}
+        ng-controller="ContentController" {% else %}
+        ng-controller="ContentController2" {% endif %}
         ng-init="init()">
 
         {% block angular_content %}
 
         <div ng-if="loading" class="loading-bg-base">
             <div class="loader-lg">
-            <svg class="circular2">
-            <circle class="path" cx="125" cy="125" r="40" fill="none" stroke-width="4"
-                stroke-miterlimit="10"/>
-            </svg>
-              <div class="loading-text">Loading...</span></div>
+                <svg class="circular2">
+                    <circle class="path" cx="125" cy="125" r="40" fill="none"
+                        stroke-width="4" stroke-miterlimit="10"/>
+                </svg>
+                <div class="loading-text">Loading...</div>
             </div>
         </div>
 
@@ -151,8 +152,6 @@
 
                 </span>
 
-
-
             </div>
         </md-toolbar>
 
@@ -170,6 +169,7 @@
             </main>
 
             <!-- bottom bar -->
+            <!-- <div ui-view="bottom"></div> -->
             <ng-include ng-if="(isAngularApp && showBottom)"
                 src="'/static/AaaE/views/bottom-bar.html'"></ng-include>
 

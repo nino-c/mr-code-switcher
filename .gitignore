@@ -12,6 +12,8 @@ pip-delete-this-directory.txt
 # Sphinx docs:
 build
 
+*.pyc
+
 # SQLite3 database files:
 *.db
 *.sqlite3
