@@ -5,6 +5,7 @@ angular
 
             $scope.showBottom = true;
             $rootScope.viewscope = $scope;
+            $rootScope.viewname = 'home';
 
             $scope.initHome = function() {
                 console.log('HomeController scope init');
