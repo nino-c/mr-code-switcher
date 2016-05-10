@@ -1,15 +1,31 @@
+## remaining after 5-10-16 ##
+
+- add fork-app feature
+  - track parent-app hierarchy
+- add hook for music viz through user-app editor
+
+## 5-10-16 ##
+
+- create vectors-path (a given consecutive instance-set of vectors from one space)
+  - use vector-paths as option for main page display
+  - implement on polynomial landscape
+- fork and tidy existing apps
+  - poly landscape, subgroups
+- copy: rename objects (adhere to 'vector' and 'space')
+- lazy loading
+
+
 # Early May 2016 #
 
-- logged-in user: add ability to select specific snapshots to display in collections
+- user: add select specific snapshots to display in collections
  
 --------------------
 
 - main page design
   - [x] simplify -- show bg-app more prominently
-  - app listing
-  - list top n apps, with more... list by name, show category only on lower level
+  - [x] app listing
+  - [x] list top n apps, with more... list by name, show category only on lower level
     - [x] sequences of thumbnail images, improve directive to always load integral multiple of #-per-row
-    - image plerper (add anim)
   - homogenize imagesets, add 1 largest per app
 
 completeness: 4/5
@@ -38,12 +54,6 @@ completeness: 5/5
 
 ----------------------
 
-- lazy loading
-
-completeness: 0/5
-
----------------------
-
 
 - main instance page
   - [x] mobile -> seed editor as popup only
@@ -61,17 +71,7 @@ completeness: 0/5
 
 - [x] verify vectorparams working on update and save
 - [x] rethink (simplify) layout of front page to show bg-app more
-- [x] seedify bg-app
-  - keep b&w
-  - operator overloading
-    - solution 1: compile at runtime
-    - solution 2 (better for now?): convert all vec operations to sylvester
-- infinite-scroll (lazy loading)
 - [x] sequences of thumbnail images, improve directive to always load integral multiple of #-per-row
-- play-through
-- main instance page
-  - [x] mobile -> seed editor as popup only
-  - work in reactive sizing into userapps themselves?
 
 # Early April 2016 #
 
@@ -113,12 +113,9 @@ completeness: 0/5
 - [x] fractal trees, add color2 on last iteration for creation of flowers as well as trees
 
 ## other ##
-- enforce only one instance per seed vector
-- make seed editor movable / transparent / collapsable
+- [x] enforce only one instance per seed vector
+- [x] make seed editor movable / transparent / collapsable
   - [x] well, smaller anyway
-- add fork-app feature
-  - track parent-app hierarchy
-- add hook for music viz through user-app editor
 
 
 
