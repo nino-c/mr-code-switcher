@@ -1,4 +1,5 @@
 
+
 - main page design
   - simplify -- show bg-app more prominently
   - list top n apps, with more... list by name, show category only on lower level
