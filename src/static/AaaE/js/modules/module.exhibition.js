@@ -60,18 +60,11 @@ angular.module('Exhibition', [
 
         $routeProvider
             .when('/', {
-              //templateUrl: '/static/AaaE/views/categories.html'
               templateUrl: '/static/AaaE/views/homepage.html'
             })
-            // .when('/categories/', {
-            //   templateUrl: '/static/AaaE/views/categories.html'
-            // })
             .when('/paperscript/:id', {
               templateUrl: '/static/AaaE/views/paperscript.html'
             })
-            // .when('/category/:id/', {
-            //   templateUrl: '/static/AaaE/views/category-list.html'
-            // })
             .when('/apps-list/', {
               templateUrl: '/static/AaaE/views/app-list-by-popularity.html'
             })
@@ -88,6 +81,12 @@ angular.module('Exhibition', [
               templateUrl: '/static/AaaE/views/app-display.html',
               reloadOnSearch: false
             })
+            // .when('/categories/', {
+            //   templateUrl: '/static/AaaE/views/categories.html'
+            // })
+            // .when('/category/:id/', {
+            //   templateUrl: '/static/AaaE/views/category-list.html'
+            // })
             .otherwise({
               redirectTo: '/'
             })
@@ -95,67 +94,66 @@ angular.module('Exhibition', [
     })
     .run(function($rootScope, $location, $http, $cookies, $timeout, $mdToast, $window) {
 
-    $http.defaults.headers.common['X-CSRFToken'] = $cookies['csrftoken'];
-    $http.defaults.xsrfCookieName = 'csrftoken';
-    $http.defaults.xsrfHeaderName = 'X-CSRFToken';
+        $http.defaults.headers.common['X-CSRFToken'] = $cookies['csrftoken'];
+        $http.defaults.xsrfCookieName = 'csrftoken';
+        $http.defaults.xsrfHeaderName = 'X-CSRFToken';
 
-    // $rootScope.showBGCanvas = true;   <--------- now obsolete
-    // $rootScope.showAppCanvas = false; <--------- now obsolete
-    $rootScope.isAngularApp = true;
-    $rootScope.showBottom = false;
-    $rootScope.topScope = null;
-    $rootScope.currentInstance = {};
+        // $rootScope.showBGCanvas = true;   <--------- now obsolete
+        // $rootScope.showAppCanvas = false; <--------- now obsolete
+        $rootScope.isAngularApp = true;
+        $rootScope.showBottom = false;
+        $rootScope.topScope = null;
+        $rootScope.currentInstance = {};
+        $rootScope.viewname = 'home';
 
-    var history = [];
-    $rootScope.$on( "$routeChangeStart", function($event, next, current) {
-        history.push($location.$$path);
-    });
-    $rootScope.$on('$routeChangeSuccess', function() {
-        history.push($location.$$path);
-    });
+        var history = [];
+        $rootScope.$on( "$routeChangeStart", function($event, next, current) {
+            history.push($location.$$path);
+        });
+        $rootScope.$on('$routeChangeSuccess', function() {
+            history.push($location.$$path);
+        });
 
-    // root-scope vars
-    $rootScope.scriptTypes = [
-        'text/javascript',
-        'text/coffeescript',
-        'text/paperscript'
-    ];
+        // root-scope vars
+        $rootScope.scriptTypes = [
+            'text/javascript',
+            'text/coffeescript',
+            'text/paperscript'
+        ];
 
-    $rootScope.viewname = 'home'
+        $rootScope.userLoggedIn = isNaN(parseInt($window.USER_ID)) ? false : true;
 
-    $rootScope.userLoggedIn = isNaN(parseInt($window.USER_ID)) ? false : true;
+        $rootScope.goHome = function() {
+          $location.path('/');
+          $rootScope.showBottom = false;
+          $rootScope.viewname = 'home';
+          $rootScope.topScope.init();
+      };
 
-    $rootScope.goHome = function() {
-      $location.path('/');
-      $rootScope.showBottom = false;
-      $rootScope.viewname = 'home';
-      $rootScope.topScope.init();
-  };
+        $rootScope.back = function () {
+            var prevUrl = history.length > 1 ? history.splice(-2)[0] : "/";
+            $location.path(prevUrl);
+        };
 
-    $rootScope.back = function () {
-        var prevUrl = history.length > 1 ? history.splice(-2)[0] : "/";
-        $location.path(prevUrl);
-    };
+        $rootScope.refreshMathJax = function() {
+            $timeout(function() {
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            }, 500);
+        };
 
-    $rootScope.refreshMathJax = function() {
-        $timeout(function() {
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-        }, 500);
-    };
+        $rootScope.toast = function(message) {
+          $mdToast.show(
+            $mdToast.simple()
+              .textContent(message)
+              .capsule(true)
+              .position('top right')
+            );
+        };
 
-    $rootScope.toast = function(message) {
-      $mdToast.show(
-        $mdToast.simple()
-          .textContent(message)
-          .capsule(true)
-          .position('top right')
-        );
-    };
+        $window.renderingDone = function() {
+            console.log('renderingDone, $rootScope level');
+        };
 
-    $window.renderingDone = function() {
-        console.log('renderingDone, $rootScope level');
-    };
-
-    $rootScope.hideXS = $window.innerWidth < 400 ? "display: 'none';" : "";
+        $rootScope.hideXS = $window.innerWidth < 400 ? "display: 'none';" : "";
 
   });

@@ -29,7 +29,7 @@ angular
                 $rootScope.showBottom = false;
                 //$scope.toggleAppList();
                 $timeout(function() {
-                  $window.scrollTo(0,0);
+                    $window.scrollTo(0,0);
                 });
 
             };
@@ -43,8 +43,8 @@ angular
                 $location.path('/apps/'+chosenApp.id)
             };
 
-            $window.renderingDone = function() {
-                console.log('renderingDone');
-            }
+            // $window.renderingDone = function() {
+            //     console.log('renderingDone');
+            // }
 
         }]);

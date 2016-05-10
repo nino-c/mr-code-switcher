@@ -13,13 +13,17 @@ angular
         function($rootScope, $scope, $location, $timeout, $window) {
 
             $rootScope.topScope = $scope;
-			$scope.loading = false;
+			$rootScope.viewscope = $scope;
 
-			// vars for cycle of featured apps
-            $scope.featuredApps = [[849, 15], [121,7]];
+			$scope.loading = false;
+			$scope.featuredApps = [[849, 15], [121,7]];
 			$scope.currentInstance = null;
             $scope.currentInstanceIndex = 0;
             $scope.currentInstanceId = $scope.featuredApps[0][0];
+
+			$scope.canvasLoadConfig = {
+				loadFromServer: true,
+			};
 
 			$scope.init = function() {
                 console.log('ContentController::'+$rootScope.viewname+' scope init');

@@ -54,7 +54,7 @@
             <div class="spacer"></div>
 
             <div layout-gt-xs="row" layout-xs="column">
-                <div flex-gt-xs="50">
+                <div flex-xs="100" flex-gt-xs="50">
                     <!-- <div layout="row" layout-align="center center">
                         <img src="{{ app.owner.avatar }}" class="avatar" />
                         by {{ app.owner.name }}
@@ -83,11 +83,11 @@
                     <spacer hide-gt-xs />
 
                 </div>
-                <div flex-gt-xs="50">
+                <div flex-xs="100" flex-gt-xs="50">
                     <md-grid-list md-cols="4" md-row-height="1:1" md-gutter="2px">
                         <md-grid-tile ng-repeat="im in app.images | limit:12">
-                            <div class="scale-fade-in">
-                                <img src="/media/{{ im | thumbnail:125 }}" style="max-width:100%; height:auto; border:1px solid #ddd;" />
+                            <div>
+                                <img src="/media/{{ im | thumbnail:125 }}" class="thumbnail-lg" />
                             </div>
                         </md-grid-tile>
                     </md-grid-list>

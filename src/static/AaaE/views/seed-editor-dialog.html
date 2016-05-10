@@ -19,13 +19,13 @@
                     <md-content layout-padding>
 
                         <div layout="row" layout-wrap>
-                            <div ng-repeat="seed in seedList" flex="45">
+                            <div ng-repeat="seed in seedlings" flex="45">
 
                                 <md-input-container ng-if="seed[1].type == 'math'">
                                     <label>{{ seed[0] }}</label>
                                     <input type="text"
                                         ng-blur="seedChangeAsync($event, seed[0])"
-                                        ng-change="seedChange($event)"
+                                        ng-change="seedChange()"
                                         ng-model="seed[1].value" />
                                     <div ng-if="seed[1].parsing">
                                         <spinner />
@@ -38,7 +38,7 @@
                                     ng-if="seed[1].type == 'string' || seed[1].type == 'number'">
                                     <label>{{ seed[0] }}</label>
                                     <input type="text"
-                                        ng-change="seedChange($event)"
+                                        ng-change="seedChange()"
                                         ng-model="seed[1].value" />
                                 </md-input-container>
 
@@ -46,7 +46,7 @@
                                     ng-if="seed[1].type == 'color'">
                                     <label>{{ seed[0] }}</label>
                                     <input type="text" colorpicker
-                                        ng-change="seedChange($event)"
+                                        ng-change="seedChange()"
                                         ng-model="seed[1].value" />
                                 </md-input-container>
 
@@ -54,7 +54,7 @@
                                     ng-if="seed[1].type == 'javascript'">
                                     <label>{{ seed[0] }}</label>
                                     <input type="text"
-                                        ng-change="seedChange($event)"
+                                        ng-change="seedChange()"
                                         ng-model="seed[1].value" />
                                 </md-input-container>
 
@@ -73,8 +73,8 @@
                                   <md-radio-group ng-model="varyParam">
 
                                       <md-radio-button ng-value="seed[0]" ng-click="seedChange($event)"
-                                        ng-repeat="seed in seedList | numberType">{{ seed[0] }}</md-radio-button>
-                                    
+                                        ng-repeat="seed in seedlings | numberType">{{ seed[0] }}</md-radio-button>
+
                                   </md-radio-group>
                                 </md-input-container>
                             </div>

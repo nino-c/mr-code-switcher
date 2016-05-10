@@ -56,40 +56,42 @@
             <div class="spacer"></div>
 
             <div class="caption">
-                <!-- <div class="image-grid float-right" hide-xs>
-                    <md-grid-list md-cols="3" md-row-height="1:1" md-gutter="2px">
-                        <md-grid-tile ng-repeat="im in app.images | limit:9">
-                            <img src="/media/{{ im | thumbnail:125 }}" style="max-width:100%; height:auto; border:1px solid #ddd;" />
-                        </md-grid-tile>
-                    </md-grid-list>
-                </div> -->
+
                 <p ng-repeat="paragraph in app.description|splitLines track by $index">{{ paragraph }}</p>
             </div>
 
             <p hide-gt-xs></p>
 
 
-                <!-- <div flex="5"></div>
-                <div flex="none">
 
-                    <div style="width:300px; float: right;" ng-if="images.length > 0">
-                        <md-grid-list md-cols="3"
-                            md-row-height="100px" md-gutter="0px">
-                            <md-grid-tile ng-repeat="image in images | limit:9">
-                                <img ng-src="/media/{{ image | thumbnail:125 }}"
-                                    class="thumbnail thumbnail-med" width="100" height="100" />
-                            </md-grid-tile>
-                        </md-grid-list>
-                    </div>
+            <!-- <div class="image-grid float-right" hide-xs>
+                <md-grid-list md-cols="3" md-row-height="1:1" md-gutter="2px">
+                    <md-grid-tile ng-repeat="im in app.images | limit:9">
+                        <img src="/media/{{ im | thumbnail:125 }}" style="max-width:100%; height:auto; border:1px solid #ddd;" />
+                    </md-grid-tile>
+                </md-grid-list>
+            </div> -->
 
-                </div> -->
+            <!-- <div flex="5"></div>
+            <div flex="none">
 
+                <div style="width:300px; float: right;" ng-if="images.length > 0">
+                    <md-grid-list md-cols="3"
+                        md-row-height="100px" md-gutter="0px">
+                        <md-grid-tile ng-repeat="image in images | limit:9">
+                            <img ng-src="/media/{{ image | thumbnail:125 }}"
+                                class="thumbnail thumbnail-med" width="100" height="100" />
+                        </md-grid-tile>
+                    </md-grid-list>
+                </div>
 
+            </div> -->
 
-            <h3>Instances</h3>
 
 
             <md-content layout="column">
+
+                <h3>Instances</h3>
 
                 <md-progress-linear md-mode="indeterminate" ng-disabled="!loadingInstances"></md-progress-linear>
 
@@ -103,27 +105,6 @@
                                 <div class="overlay-item">
                                     <!-- <h5>Seed:</h5> -->
                                     <seed-list ng-model="instance._seed"></seed-list>
-                                    <!-- <div ng-repeat="seedling in instance.seedlist">
-                                        <div>
-                                            <em>{{ seedling[0] }}:</em>
-
-                                            <span ng-if="!seedling[1].type || seedling[1].type == 'string' || seedling[1].type == 'number'"
-                                                class="text-muted">{{ seedling[1].value }}</span>
-
-                                            <div ng-if="seedling[1].type == 'color'"
-                                                style="display: inline-block; background-color: {{ seedling[1].value }};
-                                                width: 15px; height: 15px;"></div>
-
-                                            <span ng-if="seedling[1].type == 'math'" class="text-muted">
-                                            ${{ seedling[1].latex }}$
-                                            </span>
-
-                                            <span ng-if="seedling[1].type == 'javascript'" class="text-muted">
-                                            {{ seedling[1].value }}
-                                            </span>
-
-                                        </div>
-                                    </div> -->
                                 </div>
 
                                 <img ng-if="instance.images.length > 0"
@@ -136,12 +117,9 @@
                                 <md-button class="md-small pull-right"
                                     ng-click="deleteInstance($event, instance)"
                                     data-id="{{instance.id}}"
-                                    role="button">Delete</md-button>
-                                <!-- <a class="btn btn-danger pull-right"
-                                    ng-click="deleteInstance($event, instance)"
-                                    data-id="{{instance.id}}"
-                                    role="button"><span class="glyphicon glyphicon-remove"></span>
-                                    Delete</a> -->
+                                    role="button">
+                                    Delete
+                                </md-button>
                             </md-card-actions>
 
                         </md-card>
@@ -153,10 +131,7 @@
 
 
 
-
-
             <div ng-if="app.instances.length == 0">
-
                 <md-button class="md-raised md-primary"
                     ng-click="instantiate()"
                     role="button" layout-align="center center">

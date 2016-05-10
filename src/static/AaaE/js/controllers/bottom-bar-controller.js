@@ -22,7 +22,7 @@ angular
             $scope.browseApps = function($event) {
                 $event.stopPropagation();
                 $location.path('/apps-list/');
-                $rootScope.showBottom = false;
+                //$rootScope.showBottom = false;
             };
 
         }]);

@@ -25,7 +25,7 @@ angular.module('Exhibition')
     })
     .filter('rawText', function() {
         return function(text) {
-          console.log(text);
+          //console.log(text);
           return  text ? String(text).replace(/<[^>]+>/gm, '') : '';
         };
     })
