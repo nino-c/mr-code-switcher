@@ -78,8 +78,8 @@ src/static/node/material-design-icons/[^i].
 src/postgres.bak/*
 src/media/*.200x200.*
 src/media/*.125x125.*
-src/static/node/*
-src/static/bower/*
+#src/static/node/*
+#src/static/bower/*
 src/static/bower_components/*
 
 src/media.bak
