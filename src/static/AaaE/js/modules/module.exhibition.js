@@ -12,8 +12,7 @@ angular.module('Exhibition', [
   'colorpicker.module',
   'ng.deviceDetector',
   'ngSilent',
-  'ngRoute',
-  //'mdRadioGroup'
+  'ngRoute'
   ])
   .value('ui.config', {
     codemirror: {
