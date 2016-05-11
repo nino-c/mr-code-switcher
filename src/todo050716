@@ -1,0 +1,27 @@
+instance.js
+---------------
+- seed editor popup not seeding
+- bottom bar, use same as home
+- $scope.seed is ONLY model used, both seedList and _seed bound 1-way to that
+
+app-instances.js
+---------------
+- user choice of favorite images of given instance
+- lazy loading OR pagination
+- custom seed-vector-display-overlay value (specifically one for math.)
+
+instance-vector-sets
+--------------------
+- order vector by more than 1 param at a time
+- new model, consisting of a chain of instances in some order
+- will simulate animation
+- use for front-page cycle
+
+userapps
+--------------------
+- device viewport sizing, cell and tablet esp. grid is off center
+
+frontpage
+-------------------
+save tagline latex as image
+use require.js -- for example, mathjax need not be loaded for home

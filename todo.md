@@ -18,7 +18,7 @@
 # Early May 2016 #
 
 - user: add select specific snapshots to display in collections
- 
+
 --------------------
 
 - main page design
@@ -187,11 +187,11 @@ completeness: 5/5
   - [x] fix 2-way binding
     - _(fixed, but not as cleanly as I would have liked)_
       - _(should have used component/directive -- perhaps the problem is the fact that the scope for this is within a call to `eval()`)_
-  
+
 
 ## instance display page ##
 - on reload instance, canvas seems to be getting cleared, but variables from the `eval()`-ed scope need to be wiped.  (Why are elements of the previous instance rendering still showing) [easyfix: reload page -> :(]
-  
+
 - after take snapshot on load page, when navigate back -- bindings do not render in template!
   - this one seems to be a fluke that may have been fixed by correcting something in `instance.js` ?? [to re-investigate]
 

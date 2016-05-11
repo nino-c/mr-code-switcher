@@ -17,7 +17,7 @@ angular
 
         $scope.loading = true;
         $scope.loadingInstances = true;
-        $scope.showBottom = false;
+        $rootScope.showBottom = false;
 
         AppServiceMinimal.get({id:$route.current.params.id})
             .$promise.then(function(app_min) {

@@ -51,6 +51,19 @@ md-toast {
   width: 80%;
   z-index: 10000;
 }
+md-card,
+md-card.md-default-theme {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+md-dialog {
+  z-index: 2000;
+}
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 300;
+}
 #bg-iframe {
   position: fixed;
   top: 0px;
@@ -59,13 +72,6 @@ md-toast {
   width: 100%;
   height: 100%;
   z-index: -1000;
-}
-md-card,
-md-card.md-default-theme {
-  background-color: rgba(255, 255, 255, 0.6);
-}
-md-dialog {
-  z-index: 2000;
 }
 .md-dialog-container {
   z-index: 2000;
@@ -157,6 +163,13 @@ h3 {
 }
 .headline-bottom .spacer {
   height: 10px;
+}
+.headline-bottom button {
+  color: #333333;
+}
+.headline-bottom button span.button-label,
+.headline-bottom button span.glyphicon {
+  color: #333333;
 }
 .spacer {
   height: 10px;
@@ -410,11 +423,13 @@ h3 {
 }
 .feature-display {
   position: fixed;
-  top: 100px;
-  left: 50px;
+  color: rgba(50, 50, 50, 0.8);
+  top: 90px;
+  left: 30px;
   padding: 10px;
-  background-color: rgba(200, 200, 200, 0.5);
-  border: 1px solid #cccccc;
+  background-color: rgba(240, 240, 240, 0.3);
+  border: 1px solid #eeeeee;
+  border-radius: 2px;
 }
 .app-display:hover {
   cursor: pointer;
@@ -526,7 +541,7 @@ a.thumbnail.active {
   z-index: 1000;
   position: fixed;
   right: 20px;
-  top: 120px;
+  top: 90px;
   display: inline-block;
 }
 #shield {

@@ -21,17 +21,21 @@ angular
         $resource, $mdToast, $timeout, $http, $mdDialog, $ngSilentLocation,
         AppService, InstanceService)  {
 
-        var timer;
+        $rootScope.viewscope = $scope;
+        $rootScope.showBottom = true;
+        $rootScope.viewname = 'instance';
+        $rootScope.viewscope = $scope;
 
         $scope.loading = true;
-        $scope.showBottom = true;
+        $scope.timer = null;
         $scope.timeElapsed = 0;
-        $scope.seedTouched = false;
-        $scope.readyToSave = false;
+        // $scope.seedTouched = false;
+        // $scope.readyToSave = false;
         $scope.autosnapshot = false;
         $scope.source = null;
         $scope.seedcodelines = null;
         $scope.dialect = null;
+        $scope.seedlings = null;
 
         $scope.currentCycleValue = null;
         $scope.varyParam = null;
@@ -41,67 +45,88 @@ angular
         $scope.featureDisplayContent = '';
         $scope.featureDisplayCSS = {};
 
-        InstanceService.get({id:$route.current.params.instance_id})
-            .$promise.then(function(inst) {
+        $rootScope.topScope.canvasLoadConfig = {
+            loadFromServer: true,
+        };
 
-                console.log('instance seed', inst.seed, inst)
+        $rootScope.topScope.setCurrentInstance($route.current.params.instance_id);
 
-                $scope.instance = inst;
-                $scope.seedStructure = JSON.parse(inst.game.seedStructure);
-                $scope.dialect = inst.game.scriptType;
-                $scope.execute();
-            })
+        // InstanceService.get({id:$route.current.params.instance_id})
+        //     .$promise.then(function(inst) {
+        //
+        //         console.log('instance seed', inst.seed, inst)
+        //
+        //         $scope.instance = inst;
+        //         $scope.seedStructure = JSON.parse(inst.game.seedStructure);
+        //         $scope.dialect = inst.game.scriptType;
+        //         $scope.execute();
+        //     })
 
         $scope.initialize = function() {
-
-            /*
-                set up functions callable from userpap API
-            */
-
-            $window.renderingDone = function() {
-                $timeout(function() {
-                    $scope.renderingDone();
-                }, 500)
-            };
-
-            $window.featureDisplay = function(content, css) {
-                $scope.featureDisplay(content, css);
-            }
-
-            $window.snapshot = function() {
-                $scope.shapshot();
-            }
+            $rootScope.showBottom = true;
         };
+
+        $scope.cleanSeed = function(seed) {
+            return _.mapObject(seed, function(s) {
+                if (s.type == "number") {
+                    s.value = parseInt(s.value);
+                }
+                return s;
+            });
+        }
 
         $scope.parseSeedVector = function(setToFalse) {
             /*
-                creates _seed object from instance.seed:String
-                creates seedList object
+                FROM instance.seed:String
+                TO _seed:Object (with int conversion)
+                TO seedlings:Array
             */
-            $scope._seed = _.mapObject(
-                JSON.parse($scope.instance.seed), function(s) {
-                    if (s.parsing === undefined) s.parsing = false;
-                    if (setToFalse) s.parsing = false;
+            // $scope._seed = _.mapObject(
+            //     JSON.parse($scope.instance.seed), function(s) {
+            //         // if (s.parsing === undefined) s.parsing = false;
+            //         // if (setToFalse) s.parsing = false;
+            //
+            //         if (s.type == "number") {
+            //             s.value = parseInt(s.value);
+            //         }
+            //         return s;
+            //     });
+            $scope._seed = $scope.cleanSeed(JSON.parse($scope.instance.seed));
+            $scope.seedlings = _.pairs($scope._seed);
 
-                    if (s.type == "number") {
-                        s.value = parseInt(s.value);
-                    }
-                    return s;
-                });
 
-            $scope.seedList = _.pairs($scope._seed);
+            console.log('parseSeedVector, seedlings = ', $scope.seedlings);
 
-            $timeout(function() {
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-            }, 500);
+        };
+
+        $scope.updateSeed = function() {
+            /*
+                FROM seedlings:Array
+                TO _seed:Object
+            */
+            console.log('updateSeed', $scope.seedlings);
+            $scope._seed = $scope.cleanSeed(_.object($scope.seedlings)); console.log('_seed', $scope._seed);
+            $scope.instance.seed = JSON.stringify($scope._seed); console.log('$scope.instance.seed', $scope.instance.seed);
         }
 
-        $scope.execute = function() {
+        $scope.execute = function(options) {
+            $scope.appstart = new Date();
+            $scope.timer = $interval(function() {
+                $scope.timeElapsed = ((new Date()).getTime() - $scope.appstart.getTime()) / 1000;
+            }, 1000);
+
             $scope.parseSeedVector();
-            $rootScope.topScope.executeInstance($scope.instance.id);
+
+            if (!options.loadFromServer) {
+                options.instance = $scope.instance;
+            }
+            $rootScope.topScope.canvasLoadConfig = options;
+            $rootScope.topScope.setCurrentInstance($scope.instance.id);
         };
 
         $scope.renderingDone = function() {
+
+            console.log('renderingDone');
 
             if ($scope.autosnapshot) {
                 $scope.snapshot();
@@ -114,6 +139,7 @@ angular
                 }, 1500)
             }
         }
+        $window.renderingDone = $scope.renderingDone;
 
         $scope.cycleParam = function(param, min, max) {
 
@@ -124,7 +150,15 @@ angular
 
             console.log('cycle', $scope.varyParam, $scope.varyMin, $scope.varyMax);
 
-            $scope.updateInstance(true);
+            if (typeof $scope._seed[$scope.varyParam] == 'object' && $scope._seed[$scope.varyParam].value) {
+                $scope._seed[$scope.varyParam].value = $scope.currentCycleValue;
+            } else {
+                $scope._seed[$scope.varyParam] = $scope.currentCycleValue;
+            }
+
+            $scope.updateInstance({
+                autosnapshot: true
+            });
         }
 
         $scope.doCycle = function() {
@@ -142,8 +176,10 @@ angular
                 $scope._seed[$scope.varyParam] = $scope.currentCycleValue;
             }
 
-            $scope.parseSeedList();
-            $scope.updateInstance(true);
+            //$scope.parseSeedList();
+            $scope.updateInstance({
+                autosnapshot: true
+            });
 
         };
 
@@ -161,61 +197,63 @@ angular
                     return key+':'+val+';';
                 }), function(a,b) { return a+b; }, '');
 
-            $timeout(function() {
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-            }, 500);
+            $timeout($scope.refreshMathJax);
 
         };
+        $window.featureDisplay = $scope.featureDisplay;
+
+        // $scope.parseSeedList = function(setToFalse) {
+        //     /*
+        //         process seedList:Array
+        //         create  _seed:Object
+        //     */
+        //     _.each($scope.seedList, function(seed) {
+        //         $scope._seed[seed[0]] = seed[1];
+        //     })
+        //     $scope._seed = _.object($scope.seedList);
+        //
+        //     $scope.instance.seed = JSON.stringify($scope._seed);
+        //
+        //     /*
+        //         process _seed:Object
+        //         create  seedList:Array
+        //     */
+        //     if (setToFalse === undefined) setToFalse = false;
+        //
+        //     $scope._seed = _.mapObject(
+        //         $scope._seed, function(s) {
+        //             if (s.parsing === undefined) s.parsing = false;
+        //             if (setToFalse) s.parsing = false;
+        //
+        //             if (s.type == "number") {
+        //                 s.value = parseInt(s.value);
+        //             }
+        //
+        //             return s;
+        //         });
+        //
+        //     $scope.seedList = _.pairs($scope._seed);
+        //     $scope.refreshMathJax();
+        //
+        // };
 
 
-        $scope.parseSeedList = function(setToFalse) {
-            /*
-                process seedList:Array
-                create  _seed:Object
-            */
-            _.each($scope.seedList, function(seed) {
-                $scope._seed[seed[0]] = seed[1];
-            })
-            $scope._seed = _.object($scope.seedList);
-
-            $scope.instance.seed = JSON.stringify($scope._seed);
-
-            /*
-                process _seed:Object
-                create  seedList:Array
-            */
-            if (setToFalse === undefined) setToFalse = false;
-
-            $scope._seed = _.mapObject(
-                $scope._seed, function(s) {
-                    if (s.parsing === undefined) s.parsing = false;
-                    if (setToFalse) s.parsing = false;
-
-                    if (s.type == "number") {
-                        s.value = parseInt(s.value);
-                    }
-
-                    return s;
-                });
-
-            $scope.seedList = _.pairs($scope._seed);
-
-            $timeout(function() {
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-            }, 500);
-
-        };
 
 
-        $scope.updateInstance = function(autosnapshot) {
+        $scope.updateInstance = function(options) {
 
-            $scope.autosnapshot = autosnapshot ? true : false;
+            if (typeof options != 'object')
+                options = {autosnapshot:Boolean(options)};
 
+            $scope.seedlings = options.seedlings ? options.seedlings : $scope.seedlings;
+            $scope.autosnapshot = options.autosnapshot ? true : false;
             $scope.loading = true;
-            $scope.parseSeedList();
+
+            $scope.updateSeed();
+            $scope.parseSeedVector();
 
             if ($scope.userLoggedIn) {
-
+                console.log('upInst, inside');
                 var req = {
                     method: 'POST',
                     data: $scope._seed,
@@ -250,7 +288,9 @@ angular
                         }
 
                         var snapshot = response.data.alreadyExists ? false : true;
-                        $scope.execute();
+                        $scope.execute({
+                            loadFromServer:true
+                        });
 
                     }
 
@@ -266,10 +306,11 @@ angular
                 $scope.clearEvalScope();
                 $scope.loading = true;
                 $scope.timeElapsed = 0;
-                $scope.seedTouched = false;
-                $scope.readyToSave = false;
-
-                $scope.execute();
+                //$scope.seedTouched = false;
+                //$scope.readyToSave = false;
+                $scope.execute({
+                    loadFromServer:false
+                });
             }
 
         };
@@ -314,211 +355,76 @@ angular
             }
         }
 
-        $scope.editSeed = function(ev) {
+        $scope.editSeed = function($event) {
 
             console.log('editseed');
+            //$scope.seedlings = _.pairs($scope._seed);
+            $scope.parseSeedVector();
 
             $mdDialog.show({
-                //bindToController: true,
+                bindToController: true,
+                targetEvent: $event,
                 //require: ['^mdRadioGroup'],
-                scope: $scope,
+                locals: {
+                    seedlings: $scope.seedlings,
+                    parentScope: $scope
+                },
+                //preserveScope: true,
                 templateUrl: '/static/AaaE/views/seed-editor-dialog.html',
                 parent: angular.element(document.body),
-                controller: DialogController,
-                preserveScope: true
+                controller: function(scope, $mdDialog, seedlings, parentScope) {
+
+                    scope.seedlings = seedlings;
+                    scope.varyParam = null;
+                    scope.varyMin = 0;
+                    scope.varyMax = 0;
+                    scope.seedTouched = false;
+                    scope.readyToSave = false;
+
+                    scope.initializeSeedEditor = function() {
+                        console.log('DialogController init');
+                        console.log(scope.seedlings);
+                    };
+
+                    scope.closeDialog = function() {
+                        $mdDialog.hide();
+                    };
+
+                    scope.seedChange = function() {
+                        scope.seedTouched = true;
+                        scope.readyToSave = true;
+                        console.log('seedChanged', scope.seedlings)
+                    };
+
+                    scope.changeVaryParam = function() {
+                        console.log('changeVaryParam');
+                    }
+
+                    scope._updateInstance = function() {
+                        console.log('_updateInstance :: inside DialogController');
+                        console.log('varyParam', scope.varyParam);
+                        //scope.parseSeedList();
+                        //scope.updateSeed();
+
+                        parentScope.seedlings = scope.seedlings;
+
+
+                        if (scope.varyParam != null) {
+                            parentScope.cycleParam(scope.varyParam, scope.varyMin, scope.varyMax);
+                        } else {
+                            console.log('calling upIns from inside DC');
+                            parentScope.updateInstance({
+                                autosnapshot: true,
+                                seedlings: scope.seedlings
+                            });
+                        }
+                        $mdDialog.hide();
+                    }
+
+                }
             });
 
-            function DialogController($scope, $mdDialog) {
 
-                $scope.initializeSeedEditor = function() {
-                    console.log('DialogController init');
-                }
-
-                $scope.closeDialog = function() {
-                    $mdDialog.hide();
-                };
-
-                $scope.seedChange = function($event) {
-                    console.log('seedChange', $event);
-                    $scope.seedTouched = true;
-                    $scope.readyToSave = true;
-                    console.log($scope.seedList)
-                };
-
-                $scope.changeVaryParam = function() {
-                    console.log('changeVaryParam');
-                }
-
-                $scope._updateInstance = function() {
-
-                    $scope.parseSeedList();
-                    console.log('varyParam', $scope.varyParam);
-                    if ($scope.varyParam != null) {
-                        $scope.cycleParam($scope.varyParam, $scope.varyMin, $scope.varyMax);
-                    } else {
-                        $scope.updateInstance(true);
-                    }
-                    $mdDialog.hide();
-                }
-
-            }
-        }
-
-        $scope.__execute = function() {
-
-            $scope._seed = _.mapObject(
-                JSON.parse($scope.instance.seed), function(s) {
-                    s.parsing = false;
-                    return s;
-                });
-
-            $scope.parseSeedList();
-            $rootScope.topScope.executeInstance($scope.instance.id);
-            return;
-
-            //////////// old function below
-
-            if ($scope.instance.seed) {
-
-                $scope.__seed = JSON.parse($scope.instance.seed);
-                $scope._seed = _.mapObject(
-                    JSON.parse($scope.instance.seed), function(s) {
-                        s.parsing = false;
-                        return s;
-                    });
-
-                // prepare code to eval
-                // line-by-line for the system-generated part
-                var seedcodelines = [];
-
-                // full seed object
-                seedcodelines.push( 'var seed = ' + $scope.instance.seed + ';' );
-
-                // canvas declarations
-                if ($scope.dialect.indexOf('paperscript') == -1) {
-                    seedcodelines.push( 'var canvas = $("#big-canvas");' )
-                    seedcodelines.push( 'var Canvas = document.getElementById("big-canvas");' )
-                    seedcodelines.push( 'canvas.css({\'display\':\'block\'});' )
-                    seedcodelines.push( 'Canvas.width = $(window).width();' )
-                    seedcodelines.push( 'Canvas.height = $(window).height()-50;' )
-                    seedcodelines.push( 'console.log(Canvas);' )
-                    seedcodelines.push( 'console.log(canvas);' )
-                }
-
-                // import seed attributes into local namespace
-                for (attr in $scope._seed) {
-
-                    var line = '';
-                    var k = $scope.seedStructure[attr].varname ?
-                                $scope.seedStructure[attr].varname : attr;
-
-                    switch ($scope._seed[attr].type) {
-                        case 'string':
-                        case 'color':
-                            line = "var " + k + " = \""
-                                + $scope._seed[attr].value.toString() + "\";"
-                            break;
-                        case 'math':
-                            line = "var " + k + " = "
-                                + JSON.stringify($scope._seed[attr]) + ";"
-                            break;
-                        case 'javascript':
-                            line = "var " + k + " = "
-                                + $scope._seed[attr].value + ";"
-                            break;
-                        case 'number':
-                            line = "var " + k + " = "
-                                + $scope._seed[attr].value.toString() + ";"
-                            break;
-                    }
-
-                    seedcodelines.push(line);
-
-                }
-
-                // remove `var` seedcodelines if coffeescript
-                var coffee = false;
-                if ($scope.instance.game.scriptType.indexOf('coffeescript') > -1) {
-                    coffee = true;
-                }
-                if (coffee) {
-                    seedcodelines = _.map(seedcodelines, function(line) {
-                        return line.split('var ').join('').split(';').join('');
-                    });
-                }
-
-                $scope.parseSeedList();
-
-                // get required-module code (if any)
-                var required_codeblocks = '';
-                if ($scope.instance.game.required_modules.length > 0) {
-                    required_codeblocks = _.map(
-                        $scope.instance.game.required_modules, function(mod) {
-                            return mod.source;
-                        }).join("\n\n");
-                }
-
-                var source = seedcodelines.join("\n") + "\n"
-                    + required_codeblocks + "\n"
-                    + $scope.instance.sourcecode;
-
-                var sourceWithoutSeedlines = required_codeblocks + "\n"
-                    + $scope.instance.sourcecode;
-
-                //console.log(source)
-
-                if (coffee) {
-                    $scope.instance.sourcecode
-                        += "\ntry\n\twindow.start()\ncatch error\n\tconsole.log error"
-                    source = CoffeeScript.compile($scope.instance.sourcecode);
-                } else {
-                    source += "\n try { window.start(); } catch(e) {}"
-                }
-
-                if (source.indexOf('window.renderingDone()') == -1) {
-                    source += "\n\nwindow.renderingDone()";
-                }
-
-                function updateElapsedTime() {
-                    $scope.timeElapsed = ((new Date()).getTime() - $scope.appstart.getTime()) / 1000;
-                }
-
-                $scope.appstart = new Date();
-                timer = $interval(updateElapsedTime, 1000);
-
-                //eval( seedcodelines.join("\n") );
-                $scope.seedcodelines = seedcodelines.join("\n");
-                $scope.source = source;
-
-
-                // execute seed code and game script
-                // if ($scope.instance.game.scriptType == "text/paperscript") {
-
-                //     $scope.clearPaperCanvas();
-                //     eval( seedcodelines.join("\n") );
-                //     console.log('papersource', Canvas);
-                //     $scope.gameFunction = new Function('Canvas', 'canvas',
-                //         'paper', //source);
-                //         'with (paper) { ' + source
-                //             + '}')
-
-                //     $scope.gameFunction(Canvas, canvas, paper)
-                //     $scope.loading = false;
-
-                // } else {
-
-                //     $scope.clearCanvas();
-
-                //     console.log(seedcodelines.join("\n"));
-                //     eval( seedcodelines.join("\n") );
-
-                //     $scope.gameFunction = new Function('Canvas', 'canvas', source)
-                //     $scope.gameFunction(Canvas, canvas)
-                //     $scope.loading = false;
-
-                // }
-
-            }
         }
 
 
@@ -546,7 +452,8 @@ angular
                     console.log(data);
                 }
             );
-        }
+        };
+        $window.snapshot = $scope.snapshot;
 
         $scope.clearCanvas = function() {
             try {
@@ -563,7 +470,7 @@ angular
             } catch (e) {
                 console.log(e);
             }
-        }
+        };
 
         $scope.clearPaperCanvas = function() {
 
@@ -582,7 +489,7 @@ angular
                     }
                 }
             } catch (e) { console.log('clearPaperCanvas error', e); }
-        }
+        };
 
         $scope.clearEvalScope = function() {
 
@@ -602,14 +509,14 @@ angular
                 console.log('deleting gameFunction')
 
             }
-        }
+        };
 
         $scope._destroy = function() {
             console.log('scope destroy instance.js')
             $scope.clearCanvas();
             $scope.clearPaperCanvas();
             $scope.clearEvalScope();
-        }
+        };
 
         // $scope.$on("$destroy", function() {
         //     console.log('destroy1');
