@@ -73,6 +73,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
     #'django.contrib.messages',
     #'whitenoise.runserver_nostatic',
 
@@ -283,4 +284,3 @@ LOGGING = {
 }
 
 logging.config.dictConfig(LOGGING)
-

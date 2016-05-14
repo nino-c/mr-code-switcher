@@ -2,6 +2,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.sitemaps.views import sitemap
 import profiles.urls
 import accounts.urls
 import portfolio.urls
@@ -29,6 +30,8 @@ urlpatterns = [
     url(r'^symbolic_math/', include(symbolic_math.urls, namespace='symbolic_math')),
     url(r'^templatetest/(?P<template>[a-zA-Z0-9\-\_]+)$', views.templatetest),
     url(r'^accounts/', include(accounts.urls, namespace='accounts')),
+    #url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    #url(r'^sitemap-(?P<section>.+)\.xml$', views.sitemap, {'sitemaps': sitemaps}),
 ]
 
 # User-uploaded files like profile pics need to be served in development
