@@ -1,3 +1,13 @@
+## 5-15-16 ##
+- new polyland
+  - [x] do not redraw each zchange
+  - change function
+  - reset height of origin each zchange
+  - set seed vars
+- papaver gravitation
+  - reduce to animated GIF
+  - introduce more seed vars
+
 ## remaining after 5-10-16 ##
 
 - add fork-app feature

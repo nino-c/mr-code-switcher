@@ -4,42 +4,53 @@ var seed =
     "Math.pow(y, 1)":{"type":"number","value":1,"varname":"y"},
     "Math.pow(y, 2)":{"type":"number","value":2,"varname":"y2"},
     "Math.pow(y, 3)":{"type":"number","value":3,"varname":"y3"},
-    // "Math.pow(y, 4)":{"type":"number","value":-2,"varname":"y4"},
-    // "Math.pow(y, 5)":{"type":"number","value":5,"varname":"y5"},
-    //
+    "Math.pow(y, 4)":{"type":"number","value":-2,"varname":"y4"},
+    "Math.pow(y, 5)":{"type":"number","value":5,"varname":"y5"},
+
+    "Math.pow(x, 1)":{"type":"number","value":1,"varname":"x"},
+    "Math.pow(x, 1) * Math.pow(y, 1)":{"type":"number","value":1,"varname":"xy"},
+    "Math.pow(x, 1) * Math.pow(y, 2)":{"type":"number","value":0,"varname":"xy2"},
+    "Math.pow(x, 1) * Math.pow(y, 3)":{"type":"number","value":7,"varname":"xy3"},
+    "Math.pow(x, 1) * Math.pow(y, 4)":{"type":"number","value":1,"varname":"xy4"},
+    "Math.pow(x, 2)":{"type":"number","value":0,"varname":"x2"},
+    "Math.pow(x, 3) * Math.pow(y, 2)":{"type":"number","value":1,"varname":"x2y"},
+    //"Math.pow(x, 2)":{"type":"number","value":-20,"varname":"x2y2"},
+    "Math.pow(x, 2) * Math.pow(y, 3)":{"type":"number","value":1,"varname":"x2y3"},
+    "Math.pow(x, 3)":{"type":"number","value":1,"varname":"x3"},
+    "Math.pow(x, 3) * Math.pow(y, 1)":{"type":"number","value":12,"varname":"x3y"},
+    "Math.pow(x, 3) * Math.pow(y, 2)":{"type":"number","value":-15,"varname":"x3y2"},
+    "Math.pow(x, 4)^1":{"type":"number","value":1,"varname":"x4"},
+    "Math.pow(x, 4) * Math.pow(y, 1)":{"type":"number","value":1,"varname":"x4y"},
+    "Math.pow(x, 5)":{"type":"number","value":1,"varname":"x5"}
+}
+
+var seed2 =
+{
+    "Math.pow(x, 1)":{"type":"number","value":1},
+    "Math.pow(x, 2)":{"type":"number","value":-2},
+    "Math.pow(x, 3)":{"type":"number","value":3},
+    "Math.pow(y, 1)":{"type":"number","value":-1},
+    "Math.pow(y, 2)":{"type":"number","value":2},
+    "Math.pow(y, 3)*Math.pow(x, 5)":{"type":"number","value":-3},
+    // "Math.pow(x, 4)":{"type":"number","value":-2},
+    // "Math.pow(x, 5)":{"type":"number","value":5},
+
     // "Math.pow(x, 1)":{"type":"number","value":1,"varname":"x"},
     // "Math.pow(x, 1) * Math.pow(y, 1)":{"type":"number","value":1,"varname":"xy"},
     // "Math.pow(x, 1) * Math.pow(y, 2)":{"type":"number","value":0,"varname":"xy2"},
     // "Math.pow(x, 1) * Math.pow(y, 3)":{"type":"number","value":7,"varname":"xy3"},
     // "Math.pow(x, 1) * Math.pow(y, 4)":{"type":"number","value":1,"varname":"xy4"},
     // "Math.pow(x, 2)":{"type":"number","value":0,"varname":"x2"},
-    "Math.pow(x, 2) * Math.pow(y, 1)":{"type":"number","value":1,"varname":"x2y"},
-    "Math.pow(x, 2) * Math.pow(y, 2)":{"type":"number","value":-13,"varname":"x2y2"},
-    "Math.pow(x, 2) * Math.pow(y, 3)":{"type":"number","value":1,"varname":"x2y3"},
-    "Math.pow(x, 3)":{"type":"number","value":1,"varname":"x3"},
-    "Math.pow(x, 3) * Math.pow(y, 1)":{"type":"number","value":1,"varname":"x3y"},
-    "Math.pow(x, 3) * Math.pow(y, 2)":{"type":"number","value":1,"varname":"x3y2"},
-    "Math.pow(x, 4)^1":{"type":"number","value":1,"varname":"x4"},
-    "Math.pow(x, 4) * Math.pow(y, 1)":{"type":"number","value":1,"varname":"x4y"},
-    "Math.pow(x, 5)":{"type":"number","value":1,"varname":"x5"}
+    // "Math.pow(x, 3) * Math.pow(y, 2)":{"type":"number","value":1,"varname":"x2y"},
+    // //"Math.pow(x, 2)":{"type":"number","value":-20,"varname":"x2y2"},
+    // "Math.pow(x, 2) * Math.pow(y, 3)":{"type":"number","value":1,"varname":"x2y3"},
+    // "Math.pow(x, 3)":{"type":"number","value":1,"varname":"x3"},
+    // "Math.pow(x, 3) * Math.pow(y, 1)":{"type":"number","value":12,"varname":"x3y"},
+    // "Math.pow(x, 3) * Math.pow(y, 2)":{"type":"number","value":-15,"varname":"x3y2"},
+    // "Math.pow(x, 4)^1":{"type":"number","value":1,"varname":"x4"},
+    // "Math.pow(x, 4) * Math.pow(y, 1)":{"type":"number","value":1,"varname":"x4y"},
+    // "Math.pow(x, 5)":{"type":"number","value":1,"varname":"x5"}
 }
-
-var seed =
-{
-    //"Math.pow(y, 1)":{"type":"number","value":1,"varname":"y"},
-    //"Math.pow(y, 2)":{"type":"number","value":2,"varname":"y2"},
-    "Math.pow(x, 3) * Math.pow(y, 5)":{"type":"number","value":1,"varname":"x3y"},
-    "Math.pow(x, 3) * Math.pow(y, 2)":{"type":"number","value":1,"varname":"x3y2"},
-    "Math.pow(x, 4)^1":{"type":"number","value":1,"varname":"x4"},
-    "Math.pow(x, 4) * Math.pow(y, 1)":{"type":"number","value":1,"varname":"x4y"},
-    "Math.pow(x, 5)":{"type":"number","value":1,"varname":"x5"}
-}
-
-// var seed =
-// {
-//     "Math.pow(x, 4) * Math.pow(y, 1)":{"type":"number","value":-2,"varname":"x4y"},
-//     "Math.pow(x, 5)":{"type":"number","value":3,"varname":"x5"}
-// }
 
 var horizontalExpansionCoeff = 1.2;
 var primes = [2,3,5,7,11,13,17,19,23,29,31];
@@ -47,27 +58,7 @@ var primes = [2,3,5,7,11,13,17,19,23,29,31];
 var regex1 = /([a-z])\^([0-9])/;
 var regex2 = /(Math\.pow\([^\)]+\))(Math\.pow\([^\)]+\))/;
 
-var coeffs = _.map(_.pairs(seed), function(pair) {
-    //return pair[1].value;
-    return (Math.random()*10)-5;
-});
-var original_coeffs = coeffs;
 
-var coeffObj = _.mapObject(seed, function(value, key) {
-    return value.value;
-})
-
-console.log(coeffObj);
-
-function getPolynomialFunction(coeffs) {
-    return _.reduce(_.mapObject(coeffObj, function(value, key) {
-        return value.toString() + '*' + key.toString()
-    }), function(a,b) {
-        return a+'+'+b;
-    });
-}
-
-//console.log(getPolynomialFunction(coeffs));s
 
 DARK_GREY = new Color(0.3, 0.3, 0.3, 0.8);
 LIGHT_GREY = new Color(0.85, 0.85, 0.85, 0.3);
@@ -110,6 +101,8 @@ function trans(lay, scale) {
 }
 
 trans(project.activeLayer, 0.1);
+
+GraphLayer = new Layer();
 
 // define formal mathematical function
 MFunction = function(func, extrema) {
@@ -164,227 +157,151 @@ MFunction.prototype = {
     },
 
 
-    draw: function(path, matrix_premult, map3d, tmatrix) {
+    draw: function(path, tmatrix) {
 
         if (!this.computed) { this.compute(); }
 
-
         this.path = path;
         this.path.removeSegments();
-        //console.log('path1', this.path);
-        this.matrix_premult = matrix_premult;
-        this.map3d = map3d;
         this.tmatrix = tmatrix;
 
-        // if (map3d) {
-        //     this.points = this.points3d;
-        // } else {
-        //     this.points = this.getPoints();
-        // }
-
-        // if (matrix_premult) {
-        //     this.points = _.map(this.points, function(p) {
-        //         return numeric.dot(matrix_premult, p);
-        //     })
-        // }
-
-        this.points.push(new Point(this.domain.max*1.2, Math.abs(this.codomain.min)*-1.3
-            + Math.abs(this.codomain.max)*-1.3));
-        this.points.push(new Point(this.domain.min*1.2, Math.abs(this.codomain.min)*-1.3
-            + Math.abs(this.codomain.max)*-1.3));
+        this.points.push(new Point(this.domain.max*1.5, Math.abs(this.codomain.min)*-1.7
+            + Math.abs(this.codomain.max)*-1.7));
+        this.points.push(new Point(this.domain.min*1.5, Math.abs(this.codomain.min)*-1.7
+            + Math.abs(this.codomain.max)*-1.7));
 
         var self = this;
-        _.each(this.points, function(p) { self.path.add(new Point(p)); });
+        _.each(this.points, function(p) {
+            self.path.add(new Point(p));
+        });
 
         this.path.closed = true;
-        //this.path.selected = true;
 
-        if (tmatrix) {
+        if (tmatrix)
             this.path.transform(tmatrix);
-        } else {
-            this.path.transform(this.transformation_matrix);
-        }
+        else
+            this.path.matrix = (this.transformation_matrix);
 
+        //this.path.smooth();
 
-
-        //console.log('path2', this.path);
-        //this.project();
-        path.smooth();
     },
 
+    project: function(z) {
+        this.path.scale(1-(z/Z_DEPTH), 1-(z/Z_DEPTH), view.center)
+        this.path.rotate(-2*(z%Z_DEPTH), view.center);
+        this.path.translate(new Point(-5*z, 15*z))
+    }
 
 }
 
-function projectPath(path, z) {
-    path.scale(1-(z/50), 1-(z/50), view.center)
-    path.translate(new Point(-10*z, 30*z))
-}
+var coeffObj = _.mapObject(seed, function(value, key) {
+    return value.value;
+});
 
-console.log(getPolynomialFunction(coeffs));
-
-var Polynomial = function(cfs, x,y) {
-    var fn = getPolynomialFunction(cfs);
+var PolynomialSurfaceSlice = function(x, y, coeffObj) {
+    fn = _.reduce(_.mapObject(coeffObj, function(value, key) {
+        return value.toString() + '*' + key.toString()
+    }), function(a,b) {
+        return a+'+'+b;
+    });
+    //console.log(fn);
     eval("var r = " + fn + ";");
     return r;
 }
 
 
+function changeCoeffs() {
+    coeffObj = _.mapObject(coeffObj, function(value, key) {
+        // return original_coeffs[i] * (slice0.codomain.max) * Math.cos(  animationCycle/100  )
+        return originalValues[key] * Math.cos(  animationCycle/10  )
+    })
+}
 
+
+var Z_DEPTH = 8;
 xrange = [-5, 5];
-zrange = [0,-4];
-zspace = numeric.linspace(zrange[0], zrange[1], 20);
-
-
-F0 = function(x) { return Polynomial(coeffs, x,0); }
-slice0 = new MFunction(F0, [xrange[0],xrange[1]]);
-slice0.compute();
-console.log(slice0.codomain.min, slice0.codomain.max);
-global_matrix = slice0.transformation_matrix;
-console.log(global_matrix);
-
-GraphLayer = new Layer({
-    //blendMode: 'multiply'
-});
-
-var zindex = undefined;
-var drawing = true;
-var animating = false;
-zindex = 0;
+zrange = [-2,-5];
 
 var slices = [];
 var sliceFunctions = [];
 
-var animationCycle = undefined;
+var alphaCoeffs = _.map(_.range(Z_DEPTH), function(z) {
+    return 1-((z/Z_DEPTH)*0.6);
+});
 
-view.onFrame = function(event) {
-    if (drawing && zindex != undefined && zindex < zspace.length) {
-        //console.log('drawing');
-        z = zspace[zindex];
+var sliceColors = _.map(_.range(Z_DEPTH), function(z) {
+    clr = new Color(0.1,1,0.1,0.4*alphaCoeffs[z]);
+    clr.hue += 60 * Math.sin(z);
+    clr.brightness = 1 - (Math.sin(z)/2 + 1/2)/6;
+    return clr;
+});
 
-        F = function(x) { return Polynomial(coeffs, x,z); }
-        var slice = new MFunction(F, [xrange[0],xrange[1]]);
+var zrange_index = 0;
+function drawZRange(a,b) {
 
-        points3d = slice.getPoints();
-        _.each(_.range(points3d.length), function(i) {
-            points3d[i].push(z);
-        });
-        slice.points3d = points3d;
+    zspace = numeric.linspace(a, b, Z_DEPTH);
+    zindex = 0;
 
-        var indexCoeff = 1-((zindex/zspace.length)*0.8);
+    _.each(zspace, function(z) {
 
-        var path1 = new Path({
-            strokeColor: new Color(0.3, 0.3, 0.3, 0.6*indexCoeff),
-            strokeWidth: 1,
-            //closed: true,
-            fillColor: new Color(Math.random(),1,Math.random(),0.4*indexCoeff),
-        });
+        var path, sliceFunction;
+        if (zrange_index == 0) {
+            path = new Path({
+                strokeColor: new Color(0.3, 0.3, 0.3, 0.6*alphaCoeffs[zindex]),
+                strokeWidth: 1,
+                fillColor: sliceColors[zindex],
+            });
+            sliceFunction = new MFunction(function(x) {
+                return PolynomialSurfaceSlice(x,z,coeffObj);
+            }, [xrange[0],xrange[1]]);
+            global_matrix = sliceFunction.transformation_matrix;
+        } else {
+            path = slices[zindex];
+            sliceFunction = new MFunction(function(x) {
+                return PolynomialSurfaceSlice(x,z,coeffObj);
+            }, [xrange[0],xrange[1]]);
+        }
 
-        slice.draw(path1, null, true, global_matrix);
-        slices.push(path1);
-        sliceFunctions.push(slice);
-        projectPath(path1, z);
+        sliceFunction.z = z;
+        sliceFunction.getPoints();
+        sliceFunction.draw(path, global_matrix);
+        sliceFunction.project(z);
 
-        obj = project.activeLayer.insertChild(0,path1);
+        if (zrange_index == 0) {
+            slices.push(path);
+            sliceFunctions.push(sliceFunction);
+            project.activeLayer.insertChild(0,path);
+        }
+        path.smooth();
 
         zindex++;
 
-    } else {
-	 	if (zindex && drawing) {
-		  	drawing = false;
-            animating = true;
-            animationStart = event.count;
-            zindex = undefined;
-            animationCycle = undefined;
-		}
-	}
+    })
 
-    if (animating) {
+    zrange_index++;
+}
 
-        if (animationCycle === undefined) {
-            //animationStart = event.count;
-            //animationCount = event.count - animationStart;
-            zindex = undefined;
-            animationCycle = -1;
-        }
+drawZRange(zrange[0], zrange[1]);
 
-
-
-        //zindex = zindex % slices.length
-
-        if (zindex === undefined) {
-
-            animationCycle++;
-
-            console.log('animation cycle @ ' + animationCycle);
-
-            // if this is 1st time through current cycle
-            // change coefficients
-            coeffs = _.map(_.range(0,original_coeffs.length), function(i) {
-                //return original_coeffs[i] * (slice0.codomain.max/10) * Math.cos(  animationCycle/100  )
-                //return (Math.random()*10)-5;
-                return coeffs[i] + ((Math.random()*10)-5);
-            });
-
-            coeffObj = _.mapObject(coeffObj, function(value, key) {
-                return value + (Math.random()-0.5);
-            })
-
-            //console.log('coeffs changed', coeffs);
-
-            // reset zindex
-            zindex = 0;
-        }
-
-        if (animationCycle > 1000) animating = false;
-
-        if (zindex != undefined && zindex < zspace.length) {
-
-            z = zspace[zindex];
-            //console.log('zindex = ' + zindex);
-
-            G = function(x) { return Polynomial(coeffs, x,z); }
-            var sliceFunction = new MFunction(G, [xrange[0],xrange[1]]);
-
-            var slice = slices[zindex];
-            //var indexCoeff = 1-((zindex/zspace.length)*0.8);
-
-            // var path1 = new Path({
-            //     strokeColor: new Color(0.3, 0.3, 0.3, 0.6*indexCoeff),
-            //     strokeWidth: 1,
-            //     //closed: true,
-            //     fillColor: new Color(Math.random(),1,Math.random(),0.4*indexCoeff),
-            // });
-
-            //slice.removeSegments();
-
-            sliceFunction.compute();
-            sliceFunction.getPoints();
-
-            if (z == 0) {
-                //global_matrix = sliceFunction.transformation_matrix;
-                //console.log('global_matrix', global_matrix);
-            }
-
-            sliceFunction.draw(slice, null, true, global_matrix)
-
-            // _.each(_.range(sliceFunction.points.length), function(i) {
-            //     //console.log(slice.segments[i].point);
-            //     //console.log((new Point(sliceFunction.points[i])).transform(global_matrix));
-            //     slice.segments[i].point = (new Point(sliceFunction.points[i])).transform(global_matrix);
-            // })
-
-            projectPath(slice, z);
-
-            zindex++;
-
-        }
-
-        if (zindex == zspace.length) {
-            zindex = undefined;
-        }
+function zMove2(n) {
+    //slices = [];
+    //sliceFunctions = [];
+    //delta = -0.01
+    //console.log('del', delta);
+    zrange2 = [zrange[0]-5*Math.cos(n/36), zrange[1]-5*Math.cos(n/36)];
+    //console.log(zrange2);
+    //project.activeLayer.removeChildren();
+    drawZRange(zrange2[0], zrange2[1]);
+}
 
 
 
-    }
+function onResize(event) {
+	project.activeLayer.position = view.center;
+}
 
+frameInterval = 2;
+view.onFrame = function(event) {
+    if (event.count % frameInterval !== 0) return;
+    zMove2(event.count/frameInterval);
 }

@@ -1,6 +1,6 @@
 
 
-var cartesian = new Matrix(10,0,0,-10,view.center.x/2, view.center.y);
+var cartesian = new Matrix(5,0,0,-5,view.center.x/2, view.center.y);
 project.activeLayer.transform(cartesian);
 
 var COLOR1 = '#99cc66';
@@ -23,7 +23,7 @@ AffineTransformation.prototype = {
 };
 
 var transformations = _.map([
-    [[0,0],[0,0.5],[0,0], 0.05],
+    [[0,0],[0,-0.5],[0,0], 0.05],
     [[0.42,-0.42],[0.42,0.42],[0,0.2], 0.4],
     [[0.42,0.42],[-0.42,0.42],[0,0.2], 0.4],
     [[0.1,0],[0,0.1],[0,0.2], 0.15]
